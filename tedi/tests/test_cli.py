@@ -1,11 +1,11 @@
 import os
 import shutil
 
-from pathlib import Path
 from uuid import uuid4
 from click.testing import CliRunner
 from ..tedi import cli
-from ..constants import render_dir
+from ..paths import render_path
+from pathlib import Path
 
 
 def invoke(command):
@@ -25,10 +25,8 @@ def test_render_command_has_valid_help_text():
 
 
 def test_clean_command_removes_files_from_the_render_directory():
-    if os.path.isdir(render_dir):
-        shutil.rmtree(render_dir)
-        os.mkdir(render_dir)
-    canary = os.path.join(render_dir, 'test-canary-%s' % uuid4())
-    Path(canary).touch()
+    canary = Path(render_path, 'test-canary-%s' % uuid4())
+    render_path.mkdir(exist_ok=True)
+    canary.touch()
     invoke('clean')
-    assert not os.path.exists(canary)
+    assert not canary.exists()

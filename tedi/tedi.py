@@ -2,7 +2,7 @@ import click
 import os
 import shutil
 
-from .constants import render_dir
+from .paths import render_path
 
 
 @click.group()
@@ -19,6 +19,6 @@ def render():
 @cli.command()
 def clean():
     """Remove all rendered files"""
-    if os.path.isdir(render_dir):
-        shutil.rmtree(render_dir)
-        os.mkdir(render_dir)
+    if render_path.exists():
+        shutil.rmtree(str(render_path))
+        render_path.mkdir()
