@@ -16,6 +16,15 @@ def output_of(command):
     return invoke(command).output
 
 
+def assert_command_does_cleaning(command):
+    """Given a TEDI subcommand name, assert that it cleans up the rendered output"""
+    canary = Path(render_path, 'test-canary-%s' % uuid4())
+    render_path.mkdir(exist_ok=True)
+    canary.touch()
+    invoke(command)
+    assert not canary.exists()
+
+
 def test_render_command_prints_a_message():
     assert output_of('render') == 'Consider them rendered.\n'
 
@@ -25,8 +34,8 @@ def test_render_command_has_valid_help_text():
 
 
 def test_clean_command_removes_files_from_the_render_directory():
-    canary = Path(render_path, 'test-canary-%s' % uuid4())
-    render_path.mkdir(exist_ok=True)
-    canary.touch()
-    invoke('clean')
-    assert not canary.exists()
+    assert_command_does_cleaning('clean')
+
+
+def test_render_command_invokes_clean():
+    assert_command_does_cleaning('render')
