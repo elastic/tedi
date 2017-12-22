@@ -5,6 +5,7 @@ import tedi.commands as commands
 
 @click.group()
 def cli():
+    """A empty command group to create subcommands like 'tedi render'"""
     pass
 
 
