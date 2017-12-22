@@ -37,5 +37,5 @@ def test_clean_command_removes_files_from_the_render_directory():
     assert_command_does_cleaning('clean')
 
 
-def test_render_command_invokes_clean():
+def test_render_command_cleans_extraneous_files():
     assert_command_does_cleaning('render')
