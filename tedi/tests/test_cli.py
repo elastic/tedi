@@ -3,7 +3,7 @@ import shutil
 
 from uuid import uuid4
 from click.testing import CliRunner
-from ..tedi import cli
+from ..cli import cli
 from ..paths import render_path
 from pathlib import Path
 

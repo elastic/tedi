@@ -1,6 +1,6 @@
 import click
 import os
-import tedi.commands as commands
+from . import commands
 
 
 @click.group()
