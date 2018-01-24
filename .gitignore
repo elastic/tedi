@@ -1,4 +1,5 @@
 **/__pycache__
+**/*.pyc
 .cache
 .eggs
 tedi.egg-info
