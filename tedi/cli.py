@@ -1,7 +1,11 @@
 import click
+import click_log
+import logging
 import os
 from . import commands
 
+logger = logging.getLogger('tedi')
+click_log.basic_config(logger)
 
 @click.group()
 def cli():
@@ -10,6 +14,7 @@ def cli():
 
 
 @cli.command()
+@click_log.simple_verbosity_option(logger)
 def render():
     """Render the templates to static files"""
     commands.clean()

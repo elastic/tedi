@@ -9,7 +9,10 @@ setup(name='tedi',
       author_email='infra@elastic.co',
       packages=['tedi'],
       python_requires='>=3.4<=4',
-      install_requires=['click>=6.0,<7.0'],
+      install_requires=[
+          'click>=6.0,<7.0',
+          'click-log>0.2,<=1.0'
+      ],
       tests_require=[
           'pytest>=3.0<=3.1',
           # 'flake8>=3.5.0<=4',
@@ -18,5 +21,5 @@ setup(name='tedi',
       setup_requires=['pytest-runner'],
       entry_points='''
       [console_scripts]
-      tedi=tedi.tedi:cli
+      tedi=tedi.cli:cli
       ''')

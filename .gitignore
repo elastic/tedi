@@ -2,5 +2,9 @@
 **/*.pyc
 .cache
 .eggs
-tedi.egg-info
-venv
+/.pytest_cache
+/build
+/dist
+/tedi.egg-info
+/venv
+

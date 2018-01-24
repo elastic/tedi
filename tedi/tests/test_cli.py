@@ -25,10 +25,6 @@ def assert_command_does_cleaning(command):
     assert not canary.exists()
 
 
-def test_render_command_prints_a_message():
-    assert output_of('render') == 'Consider them rendered.\n'
-
-
 def test_render_command_has_valid_help_text():
     assert 'Render' in output_of('render --help')
 
@@ -39,3 +35,19 @@ def test_clean_command_removes_files_from_the_render_directory():
 
 def test_render_command_cleans_extraneous_files():
     assert_command_does_cleaning('render')
+
+
+def test_render_command_produces_one_output_file_per_input_file():
+    invoke('render')
+    input_files = []
+    for root, subdirs, files in os.walk('templates'):
+        for f in files:
+            input_files.append(os.path.join(root, f))
+
+    output_files = []
+    for root, subdirs, files in os.walk('renders'):
+        for f in files:
+            output_files.append(os.path.join(root, f))
+
+    for f in input_files:
+        assert f in output_files
