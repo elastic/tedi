@@ -4,7 +4,8 @@ import shutil
 from uuid import uuid4
 from click.testing import CliRunner
 from ..cli import cli
-from ..paths import render_path
+from ..paths import render_path, template_path
+from ..paths import make_render_path
 from pathlib import Path
 
 
@@ -42,12 +43,12 @@ def test_render_command_produces_one_output_file_per_input_file():
     input_files = []
     for root, subdirs, files in os.walk('templates'):
         for f in files:
-            input_files.append(os.path.join(root, f))
+            input_files.append(Path(os.path.join(root, f)))
 
     output_files = []
     for root, subdirs, files in os.walk('renders'):
         for f in files:
-            output_files.append(os.path.join(root, f))
+            output_files.append(Path(os.path.join(root, f)))
 
     for f in input_files:
-        assert f in output_files
+        assert make_render_path(f) in output_files
