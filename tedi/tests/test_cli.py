@@ -40,15 +40,15 @@ def test_render_command_cleans_extraneous_files():
 
 def test_render_command_produces_one_output_file_per_input_file():
     invoke('render')
-    input_files = []
-    for root, subdirs, files in os.walk('templates'):
-        for f in files:
-            input_files.append(Path(os.path.join(root, f)))
 
-    output_files = []
-    for root, subdirs, files in os.walk('renders'):
-        for f in files:
-            output_files.append(Path(os.path.join(root, f)))
+    # Collect a list of every file in the template directory.
+    for root, subdirs, files in os.walk(str(template_path)):
+        input_files = [ Path(os.path.join(root, f)) for f in files ]
 
-    for f in input_files:
-        assert make_render_path(f) in output_files
+    # Collect a similar list of every file in the output (render) directory.
+    for root, subdirs, files in os.walk(str(render_path)):
+        output_files = [ Path(os.path.join(root, f)) for f in files ]
+
+    # Now make sure that we have a one to one mapping.
+    for input_file in input_files:
+        assert make_render_path(input_file) in output_files
