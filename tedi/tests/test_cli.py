@@ -22,6 +22,11 @@ def output_of(command):
     return invoke(command).output
 
 
+def assert_in_test_file(string, test_file='renders/Dockerfile'):
+    invoke_render()
+    assert string in open(test_file).read()
+
+
 def assert_command_does_cleaning(command):
     """Given a TEDI subcommand name, assert that it cleans up the rendered output"""
     canary = Path(render_path, 'test-canary-%s' % uuid4())
@@ -61,6 +66,9 @@ def test_render_command_produces_one_output_file_per_input_file():
 
 
 def test_render_expands_jinja_template_tags():
-    template_path = 'tedi/tests/fixtures/templates'
-    invoke('render --template-path=%s' % template_path)
-    assert 'two_plus_two=4' in open('renders/Dockerfile').read()
+    assert_in_test_file('two_plus_two=4')
+
+
+def test_render_expands_our_custom_facts():
+    invoke_render()
+    assert_in_test_file('Cats can be right-pawed or left-pawed.')

@@ -4,6 +4,7 @@ import shutil
 from jinja2 import Template
 from pathlib import Path
 from .paths import get_render_path, get_template_path, make_render_path
+from .facts import Facts
 
 logger = logging.getLogger('tedi')
 
@@ -12,7 +13,7 @@ def render_template_file(src, dst):
     with src.open() as template_file:
         template = Template(template_file.read())
     with dst.open('w') as rendered_file:
-        rendered_file.write(template.render())
+        rendered_file.write(template.render(Facts().get_all()))
 
 def render():
     """Render the templates to static files"""
