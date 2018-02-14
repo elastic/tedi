@@ -3,28 +3,32 @@ import os
 from uuid import uuid4
 from click.testing import CliRunner
 from ..cli import cli
-from ..paths import get_render_path, make_render_path
+from ..paths import make_render_path
 from pathlib import Path
 
 template_path = Path('tedi/tests/fixtures/templates')
-render_path = get_render_path()
+render_path = Path('renders.test.tmp')
 
 
 def invoke(command):
     return CliRunner().invoke(cli, command.split())
 
 
+def invoke_clean():
+    invoke('clean --render-path=%s' % render_path)
+
+
 def invoke_render():
-    invoke('render --template-path=%s' % template_path)
+    invoke('render --template-path=%s --render-path=%s' % (template_path, render_path))
 
 
 def output_of(command):
     return invoke(command).output
 
 
-def assert_in_test_file(string, test_file='renders/Dockerfile'):
+def assert_in_test_file(string, test_file='Dockerfile'):
     invoke_render()
-    assert string in open(test_file).read()
+    assert string in Path(render_path, test_file).open().read()
 
 
 def assert_command_does_cleaning(command):
@@ -32,7 +36,7 @@ def assert_command_does_cleaning(command):
     canary = Path(render_path, 'test-canary-%s' % uuid4())
     render_path.mkdir(exist_ok=True)
     canary.touch()
-    invoke(command)
+    invoke_clean()
     assert not canary.exists()
 
 

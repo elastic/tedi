@@ -29,6 +29,9 @@ def render(render_path, template_path):
 
 
 @cli.command()
-def clean():
+@click.option('--render-path', help='Clean rendered files from here.')
+def clean(render_path):
     """Remove all rendered files"""
+    if render_path:
+        pyconfig.set('render_path', render_path)
     commands.clean()
