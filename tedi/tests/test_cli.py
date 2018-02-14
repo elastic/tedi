@@ -40,11 +40,13 @@ def test_render_command_cleans_extraneous_files():
 
 
 def test_render_command_produces_one_output_file_per_input_file():
-    invoke('render')
+    template_path = 'tedi/tests/fixtures/templates'
+    invoke('render --template-path=%s' % template_path)
 
     # Collect a list of every file in the template directory.
     for root, subdirs, files in os.walk(str(template_path)):
         input_files = [ Path(os.path.join(root, f)) for f in files ]
+        assert len(input_files) > 0
 
     # Collect a similar list of every file in the output (render) directory.
     for root, subdirs, files in os.walk(str(render_path)):
