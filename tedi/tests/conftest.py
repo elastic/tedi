@@ -1,6 +1,7 @@
 import pyconfig
 from pytest import fixture
 
+
 # We are using the pyconfig package to provide global settings across the whole
 # application. It's implemented as a singleton and thus if you mutate it in one
 # function, the changes propagate to others. That's needed at runtime, but in the

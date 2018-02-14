@@ -1,5 +1,4 @@
 import os
-import pyconfig
 from pathlib import Path
 
 from ..paths import get_render_path, get_template_path, make_render_path

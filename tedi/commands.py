@@ -8,12 +8,14 @@ from .facts import Facts
 
 logger = logging.getLogger('tedi')
 
+
 def render_template_file(src, dst):
     """Render a template from src Path to dst Path with Jinja2."""
     with src.open() as template_file:
         template = Template(template_file.read())
     with dst.open('w') as rendered_file:
         rendered_file.write(template.render(Facts().get_all()))
+
 
 def render():
     """Render the templates to static files"""

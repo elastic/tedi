@@ -13,12 +13,13 @@ setup(name='tedi',
           'click>=6.0,<7.0',
           'click-log>0.2,<=1.0',
           'jinja2>=2.10,<3.0',
-          'pyconfig>=3.2.3,<4.0.0'
+          'pyconfig>=3.2.3,<4.0.0',
       ],
       tests_require=[
           'pytest>=3.0<=3.1',
-          # 'flake8>=3.5.0<=4',
-          # 'pytest-flake8>=0.9.0<1',
+          'pytest-cov>=2.5.1,<3.0.0',
+          'flake8>=3.5.0<=4',
+          'pytest-flake8>=0.9.0<1',
       ],
       setup_requires=['pytest-runner'],
       entry_points='''

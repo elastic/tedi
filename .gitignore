@@ -2,6 +2,7 @@
 **/*.pyc
 **/*.test.tmp
 .cache
+.coverage
 .eggs
 /.pytest_cache
 /build

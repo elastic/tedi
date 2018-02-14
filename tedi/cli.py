@@ -1,12 +1,12 @@
 import click
 import click_log
 import logging
-import os
 import pyconfig
 from . import commands
 
 logger = logging.getLogger('tedi')
 click_log.basic_config(logger)
+
 
 @click.group()
 def cli():
