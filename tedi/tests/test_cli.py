@@ -4,10 +4,11 @@ import shutil
 from uuid import uuid4
 from click.testing import CliRunner
 from ..cli import cli
-from ..paths import render_path, template_path
-from ..paths import make_render_path
+from ..paths import get_render_path, get_template_path, make_render_path
 from pathlib import Path
 
+template_path = get_template_path()
+render_path = get_render_path()
 
 def invoke(command):
     return CliRunner().invoke(cli, command.split())

@@ -11,7 +11,8 @@ setup(name='tedi',
       python_requires='>=3.4<=4',
       install_requires=[
           'click>=6.0,<7.0',
-          'click-log>0.2,<=1.0'
+          'click-log>0.2,<=1.0',
+          'pyconfig>=3.2.3,<4.0.0'
       ],
       tests_require=[
           'pytest>=3.0<=3.1',
