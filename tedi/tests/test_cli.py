@@ -7,11 +7,15 @@ from ..cli import cli
 from ..paths import get_render_path, get_template_path, make_render_path
 from pathlib import Path
 
-template_path = get_template_path()
+template_path = 'tedi/tests/fixtures/templates'
 render_path = get_render_path()
 
 def invoke(command):
     return CliRunner().invoke(cli, command.split())
+
+
+def invoke_render():
+    invoke('render --template-path=%s' % template_path)
 
 
 def output_of(command):
@@ -40,8 +44,7 @@ def test_render_command_cleans_extraneous_files():
 
 
 def test_render_command_produces_one_output_file_per_input_file():
-    template_path = 'tedi/tests/fixtures/templates'
-    invoke('render --template-path=%s' % template_path)
+    invoke_render()
 
     # Collect a list of every file in the template directory.
     for root, subdirs, files in os.walk(str(template_path)):
