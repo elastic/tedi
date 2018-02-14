@@ -8,7 +8,7 @@ from pytest import fixture
 # leak state from one test to another.
 #
 # To stop that happening, we will declare a universal, automatically invoked
-# setup fixture that applies to every single test and reset the config to
+# setup fixture that applies to every single test and which resets the config to
 # the baseline state.
 @fixture(scope='module', autouse=True)
 def reload_pyconfig():
