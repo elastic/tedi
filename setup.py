@@ -12,6 +12,7 @@ setup(name='tedi',
       install_requires=[
           'click>=6.0,<7.0',
           'click-log>0.2,<=1.0',
+          'jinja2>=2.10,<3.0',
           'pyconfig>=3.2.3,<4.0.0'
       ],
       tests_require=[

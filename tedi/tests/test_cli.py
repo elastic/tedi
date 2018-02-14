@@ -7,7 +7,7 @@ from ..cli import cli
 from ..paths import get_render_path, get_template_path, make_render_path
 from pathlib import Path
 
-template_path = 'tedi/tests/fixtures/templates'
+template_path = Path('tedi/tests/fixtures/templates')
 render_path = get_render_path()
 
 def invoke(command):
@@ -58,3 +58,9 @@ def test_render_command_produces_one_output_file_per_input_file():
     # Now make sure that we have a one to one mapping.
     for input_file in input_files:
         assert make_render_path(input_file) in output_files
+
+
+def test_render_expands_jinja_template_tags():
+    template_path = 'tedi/tests/fixtures/templates'
+    invoke('render --template-path=%s' % template_path)
+    assert 'two_plus_two=4' in open('renders/Dockerfile').read()
