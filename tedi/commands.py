@@ -2,15 +2,16 @@ import logging
 import os
 import shutil
 from pathlib import Path
-from .paths import get_render_path, get_template_path
-from .paths import make_render_path, mkdir_for_render
+from .paths import get_render_path, get_template_path, make_render_path
 
 logger = logging.getLogger('tedi')
 
 def render():
     """Render the templates to static files"""
     for root, subdirs, files in os.walk(str(get_template_path())):
-        mkdir_for_render(Path(root))
+        new_dir = make_render_path(Path(root))
+        logger.debug("Creating render dir: %s" % new_dir)
+        new_dir.mkdir(parents=True)
 
         for f in files:
             src = Path(root) / f
