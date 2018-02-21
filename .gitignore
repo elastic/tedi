@@ -3,6 +3,7 @@
 **/*.test.tmp
 .cache
 .coverage
+.coverage.*
 .eggs
 /.pytest_cache
 /build
