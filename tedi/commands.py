@@ -78,8 +78,9 @@ def build():
     client = docker.from_env()
     jobs = glob(str(paths.render_path / '*'))
     for job in jobs:
-        logger.info('Building %s...' % job)
+        image = os.path.basename(job)
+        logger.info('Building %s...' % image)
         client.images.build(
             path=str(job),
-            tag=os.path.basename(job)
+            tag=os.path.basename(image)
         )
