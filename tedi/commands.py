@@ -79,8 +79,13 @@ def render():
             for f in files:
                 src = Path(root) / f
                 dst = paths.make_render_path(Path(root) / f, suffix=task['variant'])
-                logger.debug("Rendering: %s -> %s" % (src, dst))
-                render_template_file(src, dst, extra_facts=task['facts'])
+                if(src.suffix == '.j2'):
+                    dst = dst.with_suffix('')
+                    logger.debug("Rendering: %s -> %s" % (src, dst))
+                    render_template_file(src, dst, extra_facts=task['facts'])
+                else:
+                    logger.debug("Copying: %s -> %s" % (src, dst))
+                    shutil.copy(str(src), str(dst))
 
 
 def clean():
