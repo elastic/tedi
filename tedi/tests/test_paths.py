@@ -1,10 +1,9 @@
-import os
-from pathlib import Path
+from ..paths import Paths
 
-from ..paths import get_render_path, get_template_path, make_render_path
+paths = Paths()
 
 
 def test_make_render_path():
-    src = Path(get_template_path()) / 'one' / 'two'
-    dst = make_render_path(src)
-    assert dst == Path(os.path.join(str(get_render_path()), 'one', 'two'))
+    src = paths.template_path / 'one' / 'two'
+    dst = paths.make_render_path(src)
+    assert dst == paths.render_path / 'one' / 'two'

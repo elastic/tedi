@@ -1,0 +1,9 @@
+---
+variants:
+  variant01:
+    facts:
+      favorite_number: one
+
+  variant02:
+    facts:
+      favorite_number: two

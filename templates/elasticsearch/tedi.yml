@@ -1,0 +1,11 @@
+---
+variants:
+  oss:
+    facts:
+      image_flavor: oss
+  basic:
+    facts:
+      image_flavor: basic
+  platinum:
+    facts:
+      image_flavor: platinum
