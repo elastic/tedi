@@ -51,6 +51,7 @@ def render_template_file(src, dst, extra_facts={}):
 
 def render():
     """Render the templates to static files"""
+    logger.info('Rendering...')
     jobs = [os.path.basename(j) for j in glob(str(paths.template_path / '*'))]
     task_matrix = []
 
@@ -66,9 +67,10 @@ def render():
                 'facts': config['facts']
             }
             task_matrix.append(task)
-    logger.debug(json.dumps(task_matrix, indent=4))
 
     for task in task_matrix:
+        logger.debug('Running build task definition:')
+        logger.debug(json.dumps(task, indent=4))
         for root, subdirs, files in os.walk(str(paths.template_path / task['job'])):
             new_dir = paths.make_render_path(Path(root), suffix=task['variant'])
             logger.debug("Creating render dir: %s" % new_dir)
