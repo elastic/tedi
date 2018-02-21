@@ -23,7 +23,7 @@ def output_of(command):
     return invoke(command).output
 
 
-def assert_in_test_file(string, test_file='image01-default/Dockerfile'):
+def assert_in_test_file(string, test_file='image01/Dockerfile'):
     invoke_render()
     assert string in Path(render_path, test_file).open().read()
 
