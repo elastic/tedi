@@ -2,4 +2,3 @@
 variants:
   default:
     facts:
-      favorite_number: one

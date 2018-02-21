@@ -14,6 +14,29 @@ logger = logging.getLogger('tedi.commands')
 paths = Paths()
 
 
+def die(message, exit_code=1):
+    logger.error(message)
+    raise SystemExit(exit_code)
+
+
+def load_job_config(job):
+    config_file = paths.template_path / job / 'tedi.yml'
+    try:
+        with config_file.open() as config:
+            job_config = yaml.load(config)
+    except FileNotFoundError:
+        die('No config file "%s"' % config_file)
+    if job_config is None:
+        die('Empty YAML file "%s"' % config_file)
+    if 'variants' not in job_config:
+        die('Must specify a "variants" block in "%s"' % config_file)
+    for variant, variant_config in job_config['variants'].items():
+        if 'facts' not in variant_config or variant_config['facts'] is None:
+            logger.warn('No facts specified for variant "%s" in "%s"' % (variant, config_file))
+            variant_config['facts'] = {}
+    return job_config
+
+
 def render_template_file(src, dst, extra_facts={}):
     """Render a template from src Path to dst Path with Jinja2."""
     jinja_env = Environment(
@@ -32,16 +55,8 @@ def render():
     task_matrix = []
 
     for job in jobs:
-        job_config = None
-        config_file = paths.template_path / job / 'tedi.yml'
-        with config_file.open() as config:
-            job_config = yaml.load(config)
-            assert job_config is not None
-
-        try:
-            variants = job_config['variants']
-        except KeyError:
-            logger.error('Must specify a "variants" block in "%s"' % config_file)
+        job_config = load_job_config(job)
+        variants = job_config['variants']
 
         logger.debug("Found %s variants for job %s: %s" % (len(variants), job, variants))
         for variant, config in variants.items():
