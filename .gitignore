@@ -1,6 +1,8 @@
 **/__pycache__
 **/*.pyc
 **/*.test.tmp
+**/.mypy_cache 
+**/.pytest_cache 
 .cache
 .coverage
 .coverage.*
