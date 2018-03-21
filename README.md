@@ -15,3 +15,10 @@ pip install -e .
 ``` shell
 python setup.py test
 ```
+
+### Building the images
+
+``` shell
+tedi build --verbosity=info
+```
+
