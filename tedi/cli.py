@@ -14,7 +14,7 @@ def cli():
 
 
 @cli.command()
-@click_log.simple_verbosity_option()
+@click_log.simple_verbosity_option(logger)
 def render():
     """Render the projects to static files"""
     commands.clean()
@@ -22,14 +22,14 @@ def render():
 
 
 @cli.command()
-@click_log.simple_verbosity_option()
+@click_log.simple_verbosity_option(logger)
 def clean():
     """Remove all rendered files"""
     commands.clean()
 
 
 @cli.command()
-@click_log.simple_verbosity_option()
+@click_log.simple_verbosity_option(logger)
 def build():
     """Render the projects to static files"""
     commands.clean()

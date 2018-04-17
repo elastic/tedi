@@ -1,6 +1,7 @@
-# import docker
+import docker
+import glob
 import logging
-# import os
+import os
 import shutil
 from .paths import Paths
 from .builder import Builder
@@ -22,8 +23,7 @@ def render():
         source_dir='projects/elasticsearch',
         target_dir='renders/elasticsearch',
         facts=Factset(
-            artifacts_dir='bob',
-            image_flavor='oss',
+            image_flavor='oss'
         ),
     ).render()
 
@@ -38,12 +38,15 @@ def clean():
 def build():
     """Build the images from the rendered files"""
     pass
-    # client = docker.from_env()
-    # projects = glob(str(paths.render_path / '*'))
-    # for project in projects:
-    #     image = os.path.basename(project)
-    #     logger.info('Building %s...' % image)
-    #     client.images.build(
-    #         path=str(project),
-    #         tag=os.path.basename(image)
-    #     )
+    client = docker.from_env()
+    projects = os.listdir(str(paths.renders_path))
+    print(projects)
+    for project in projects:
+        logger.info('Building %s...' % project)
+        image, build_log = client.images.build(
+            path=os.path.join(paths.renders_path, project),
+            tag=f'{project}:tedi'
+        )
+        for line in build_log:
+            if 'stream' in line:
+                logger.debug(line['stream'])
