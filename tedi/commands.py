@@ -1,7 +1,4 @@
-import docker
-import glob
 import logging
-import os
 import shutil
 from .paths import Paths
 from .builder import Builder
@@ -11,6 +8,17 @@ from .factset import Factset
 logger = logging.getLogger('tedi.commands')
 paths = Paths()
 
+builders = [
+    Builder(
+        image_name='elasticsearch-full',
+        source_dir='projects/elasticsearch',
+        target_dir='renders/elasticsearch',
+        facts=Factset(
+            image_flavor='oss'
+        ),
+    )
+]
+
 
 def die(message, exit_code=1):
     logger.error(message)
@@ -19,13 +27,8 @@ def die(message, exit_code=1):
 
 def render():
     """Render the projects to static files"""
-    Builder(
-        source_dir='projects/elasticsearch',
-        target_dir='renders/elasticsearch',
-        facts=Factset(
-            image_flavor='oss'
-        ),
-    ).render()
+    for builder in builders:
+        builder.render()
 
 
 def clean():
@@ -37,15 +40,5 @@ def clean():
 
 def build():
     """Build the images from the rendered files"""
-    client = docker.from_env()
-    projects = os.listdir(str(paths.renders_path))
-    print(projects)
-    for project in projects:
-        logger.info('Building %s...' % project)
-        image, build_log = client.images.build(
-            path=os.path.join(paths.renders_path, project),
-            tag=f'{project}:tedi'
-        )
-        for line in build_log:
-            if 'stream' in line:
-                logger.debug(line['stream'])
+    for builder in builders:
+        builder.build()
