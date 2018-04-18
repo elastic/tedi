@@ -34,9 +34,9 @@ class Builder():
                 target.mkdir()
             elif source.suffix == '.j2':
                 target = Path(target.with_suffix(''))  # Remove '.j2'
-                logger.debug(f'Rendering: {source} -> {target}')
+                logger.debug(f'Rendering file: {source} -> {target}')
                 with target.open('w') as f:
                     f.write(self.renderer.render(source))
             else:
-                logger.debug(f'Copying: {source} -> {target}')
+                logger.debug(f'Copying file: {source} -> {target}')
                 shutil.copy2(str(source), str(target))

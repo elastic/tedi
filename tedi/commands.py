@@ -37,7 +37,6 @@ def clean():
 
 def build():
     """Build the images from the rendered files"""
-    pass
     client = docker.from_env()
     projects = os.listdir(str(paths.renders_path))
     print(projects)
