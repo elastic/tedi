@@ -10,6 +10,14 @@ paths = Paths()
 
 builders = [
     Builder(
+        image_name='elasticsearch-oss',
+        source_dir='projects/elasticsearch',
+        target_dir='renders/elasticsearch',
+        facts=Factset(
+            image_flavor='full'
+        ),
+    ),
+    Builder(
         image_name='elasticsearch-full',
         source_dir='projects/elasticsearch',
         target_dir='renders/elasticsearch',
