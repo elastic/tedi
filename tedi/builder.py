@@ -24,9 +24,10 @@ class Builder():
             (self.files.top_dir, self.target_dir, self.renderer.facts)
 
     def render(self):
-        logger.info(f'Rendering project: {self.source_dir} -> {self.target_dir}')
+        """Render the template files to a ready-to-build directory."""
+        logger.info(f'Rendering {self.image_name}: {self.source_dir} -> {self.target_dir}')
         if self.target_dir.exists():
-            logger.debug(f'Removing old rendered project: {self.target_dir}')
+            logger.debug(f'Removing old render: {self.target_dir}')
             shutil.rmtree(str(self.target_dir))
         self.target_dir.mkdir(parents=True)
 
@@ -45,12 +46,17 @@ class Builder():
                 shutil.copy2(str(source), str(target))
 
     def build(self):
-        logger.info('Building %s...' % self.target_dir)
-        print(self.target_dir)
+        """Run a "docker build" on the rendered image files."""
+        logger.info(f'Building {self.image_name}...')
         image, build_log = self.docker.images.build(
             path=str(self.target_dir),
-            tag=f'{self.image_name}'
+            tag=f'{self.image_name}'  # FIXME: Add Elastic version to tag.
         )
+
+        # The output you'd normally get on the terminal from `docker build` can
+        # be found in the build log, along with some extra metadata lines we
+        # don't care about. The good stuff is in the lines that have a 'stream'
+        # field.
         for line in build_log:
             if 'stream' in line:
                 logger.debug(line['stream'])
