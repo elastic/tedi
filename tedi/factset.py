@@ -15,7 +15,7 @@ class Factset(object):
     """
     def __init__(self, **keyword_facts):
         self.facts = {}
-        self['elastic_version'] = '6.2.2'
+        self['elastic_version'] = '6.2.4'
 
         # If these environment variables are set, they will become facts.
         # If they are not set, they will be None, and thus discarded.
