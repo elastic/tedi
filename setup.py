@@ -15,6 +15,7 @@ setup(name='tedi',
           'docker==3.0.1',
           'jinja2==2.10',
           'pyyaml==3.12',
+          'wget==3.2',
       ],
       tests_require=[
           'flake8==3.5.0',

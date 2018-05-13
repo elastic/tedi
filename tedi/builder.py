@@ -50,7 +50,6 @@ class Builder():
     def build(self):
         """Run a "docker build" on the rendered image files."""
         logger.info(f'Building {self.image_tag}...')
-        print(self)
         image, build_log = self.docker.images.build(
             path=str(self.target_dir),
             tag=f'{self.image_tag}'
