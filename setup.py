@@ -14,7 +14,6 @@ setup(name='tedi',
           'click-log==0.2.1',
           'docker==3.0.1',
           'jinja2==2.10',
-          'pyconfig==3.2.3',
           'pyyaml==3.12',
       ],
       tests_require=[
