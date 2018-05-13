@@ -1,0 +1,8 @@
+images:
+  simple-vanilla:
+    facts:
+      image_flavor: vanilla
+
+  simple-chocolate:
+    facts:
+      image_flavor: chocolate
