@@ -22,7 +22,7 @@ def render():
 
 
 @cli.command()
-@click.option('--clean-assets', is_flag=True)
+@click.option('--clean-assets', is_flag=True, help='Also remove assets.')
 @click_log.simple_verbosity_option(logger)
 def clean(clean_assets):
     """Remove all rendered files and (optionally) downloaded assets"""
@@ -30,7 +30,7 @@ def clean(clean_assets):
 
 
 @cli.command()
-@click.option('--clean-assets', is_flag=True)
+@click.option('--clean-assets', is_flag=True, help='Reaquire assets.')
 @click_log.simple_verbosity_option(logger)
 def build(clean_assets):
     """Render the projects to static files"""
