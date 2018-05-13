@@ -13,22 +13,33 @@ class Project():
     def __init__(self, path):
         self.path = path
 
-        self.config = yaml.load(open(self.path / 'tedi.yml').read())
+        with open(self.path / 'tedi.yml') as config_file:
+            self.config = yaml.load(config_file.read())
         assert self.config  # Because the YAML library returns None for empty files.
         logger.debug(f'Loaded project config from {self.path}: {self.config}')
 
-        # A project is a collection of one or more image builders.
+        if 'facts' in self.config:
+            self.facts = Factset(**self.config['facts'])
+        else:
+            self.facts = Factset()
+
+        # A project has a collection of one or more image builders.
         self.builders = []
         for image_name, image_config in self.config['images'].items():
-            logger.debug(f'Loaded builder config for {image_name}: {image_config}')
-            self.builders.append(
-                Builder(
-                    image_name=image_name,
-                    source_dir=self.path,
-                    target_dir=paths.renders_path / image_name,
-                    facts=Factset(**image_config['facts']),
-                )
+            logger.info(f'Loaded builder config for {image_name}: {image_config}')
+
+            # Each image gets it own Factset that inherits from the project Factset.
+            image_facts = Factset(**self.facts.to_dict())
+            if 'facts' in image_config:
+                image_facts.update(image_config['facts'])
+
+            builder = Builder(
+                image_name=image_name,
+                source_dir=self.path,
+                target_dir=paths.renders_path / image_name,
+                facts=image_facts,
             )
+            self.builders.append(builder)
 
         self.asset_sets = {}
         if 'asset_sets' in self.config:

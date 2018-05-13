@@ -16,5 +16,5 @@ class Asset():
         return f'Asset(filename="{self.filename}", source="{self.source}")'
 
     def acquire(self):
-        assets_path.mkdir()
+        assets_path.mkdir(parents=True, exist_ok=True)
         wget.download(self.source, str(self.local_path))

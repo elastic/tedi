@@ -7,6 +7,9 @@ images:
     facts:
       image_flavor: chocolate
 
+facts:
+  animal: giraffe
+
 asset_sets:
   remote_snapshot:
     - filename: simple-software.tar.gz

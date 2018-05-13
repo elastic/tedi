@@ -1,7 +1,8 @@
 from pathlib import Path
 from pytest import fixture
 from ..project import Project
-from ..project import Assetset
+from ..assetset import Assetset
+from ..factset import Factset
 from unittest.mock import Mock
 
 
@@ -34,3 +35,11 @@ def test_projects_have_a_dictionary_of_asset_sets(project):
     assert isinstance(project.asset_sets, dict)
     for asset_set in project.asset_sets.values():
         assert isinstance(asset_set, Assetset)
+
+
+def test_projects_have_a_factset(project):
+    assert isinstance(project.facts, Factset)
+
+
+def test_projects_can_declare_project_level_facts(project):
+    assert project.facts['animal'] == 'giraffe'
