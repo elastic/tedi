@@ -3,6 +3,7 @@ import logging
 from .paths import Paths
 from .builder import Builder
 from .factset import Factset
+from .assetset import Assetset
 
 logger = logging.getLogger('tedi.project')
 paths = Paths()
@@ -28,6 +29,11 @@ class Project():
                     facts=Factset(**image_config['facts']),
                 )
             )
+
+        self.asset_sets = {}
+        if 'asset_sets' in self.config:
+            for asset_set_name, assets in self.config['asset_sets'].items():
+                self.asset_sets[asset_set_name] = Assetset(assets)
 
     def __repr__(self):
         return f'Project("{self.path}")'

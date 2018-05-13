@@ -6,3 +6,11 @@ images:
   simple-chocolate:
     facts:
       image_flavor: chocolate
+
+asset_sets:
+  remote_snapshot:
+    - asset: simple-software.tar.gz
+      source: http://example.org/downloads/simple-software-SNAPSHOT.tar.gz
+  remote_release:
+    - asset: simple-software.tar.gz
+      source: http://example.org/downloads/simple-software.tar.gz
