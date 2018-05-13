@@ -13,6 +13,7 @@ class Builder():
     def __init__(self, image_name, source_dir, target_dir, facts):
         self.image_name = image_name
         self.image_version = facts['elastic_version']
+        self.image_tag = f'{self.image_name}:{self.image_version}'
         self.source_dir = Path(source_dir)
         self.target_dir = Path(target_dir)
         self.files = Fileset(self.source_dir)
@@ -48,10 +49,11 @@ class Builder():
 
     def build(self):
         """Run a "docker build" on the rendered image files."""
-        logger.info(f'Building {self.image_name}...')
+        logger.info(f'Building {self.image_tag}...')
+        print(self)
         image, build_log = self.docker.images.build(
             path=str(self.target_dir),
-            tag=f'{self.image_name}:{self.image_version}'
+            tag=f'{self.image_tag}'
         )
 
         # The output you'd normally get on the terminal from `docker build` can
