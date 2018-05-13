@@ -12,6 +12,12 @@ def test_top_dir_is_a_path(fileset):
     assert isinstance(fileset.top_dir, Path)
 
 
+def test_repr_is_valid_python(fileset):
+    reparsed = eval(fileset.__repr__())
+    assert isinstance(reparsed, Fileset)
+    assert fileset.top_dir == reparsed.top_dir
+
+
 def test_fileset_is_a_set_of_paths(fileset):
     assert len(list(fileset)) > 5
     assert all([isinstance(f, Path) for f in fileset])
