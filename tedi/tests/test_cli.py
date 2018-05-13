@@ -19,12 +19,12 @@ def assert_in_file(test_file, string):
     assert string in (paths.renders_path / test_file).open().read()
 
 
-def assert_command_does_cleaning(command):
+def assert_command_cleans_path(path, command):
     """Given a TEDI subcommand name, assert that it cleans up rendered files"""
-    paths.renders_path.mkdir(parents=True, exist_ok=True)
-    canary = paths.renders_path / ('test-canary-%s' % uuid4())
+    path.mkdir(parents=True, exist_ok=True)
+    canary = path / ('test-canary-%s' % uuid4())
     canary.touch()
-    invoke('clean')
+    invoke(command)
     assert canary.exists() is False
 
 
@@ -32,9 +32,17 @@ def test_render_command_has_valid_help_text():
     assert 'Render' in output_of('render --help')
 
 
-def test_clean_command_removes_files():
-    assert_command_does_cleaning('clean')
+def test_clean_command_removes_rendered_files():
+    assert_command_cleans_path(paths.renders_path, 'clean')
 
 
-def test_render_command_removes_files():
-    assert_command_does_cleaning('render')
+def test_render_command_cleans_renders_path():
+    assert_command_cleans_path(paths.renders_path, 'render')
+
+
+def test_clean_command_removes_assets_with_clean_assets_flag():
+    assert_command_cleans_path(paths.assets_path, 'clean --clean-assets')
+
+
+def test_build_command_removes_assets_with_clean_assets_flag():
+    assert_command_cleans_path(paths.assets_path, 'build --clean-assets')

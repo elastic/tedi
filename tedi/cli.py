@@ -22,16 +22,18 @@ def render():
 
 
 @cli.command()
+@click.option('--clean-assets', is_flag=True)
 @click_log.simple_verbosity_option(logger)
-def clean():
-    """Remove all rendered files"""
-    commands.clean()
+def clean(clean_assets):
+    """Remove all rendered files and (optionally) downloaded assets"""
+    commands.clean(clean_assets)
 
 
 @cli.command()
+@click.option('--clean-assets', is_flag=True)
 @click_log.simple_verbosity_option(logger)
-def build():
+def build(clean_assets):
     """Render the projects to static files"""
-    commands.clean()
+    commands.clean(clean_assets)
     commands.render()
     commands.build()
