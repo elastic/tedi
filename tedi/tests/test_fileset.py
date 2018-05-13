@@ -5,7 +5,7 @@ from ..fileset import Fileset
 
 @fixture
 def fileset() -> Fileset:
-    return Fileset(Path('tedi/tests/fixtures/fileset/simple'))
+    return Fileset(Path('tedi/tests/fixtures/projects/simple'))
 
 
 def test_top_dir_is_a_path(fileset):

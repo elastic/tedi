@@ -7,7 +7,7 @@ from ..factset import Factset
 from uuid import uuid4
 
 
-source_dir = Path('tedi/tests/fixtures/fileset/simple')
+source_dir = Path('tedi/tests/fixtures/projects/simple')
 target_dir = Path('target.test.tmp')
 assert source_dir.exists()
 
