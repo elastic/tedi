@@ -22,3 +22,8 @@ def test_facts_is_a_factset(renderer):
 def test_render_expands_facts_in_the_template(renderer, template):
     rendered = renderer.render(template)
     assert rendered == 'The canary is a yellow bird.'
+
+
+def test_render_string_expands_facts_in_the_string(renderer, template):
+    rendered = renderer.render_string('The canary is a {{ color }} bird.')
+    assert rendered == 'The canary is a yellow bird.'
