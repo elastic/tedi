@@ -3,8 +3,7 @@ from .paths import Paths
 from .project import Project
 from .logging import getLogger
 
-
-logger = getLogger('tedi.commands')
+logger = getLogger(__name__)
 paths = Paths()
 
 projects = []

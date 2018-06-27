@@ -26,7 +26,7 @@ class Project():
         # A project has a collection of one or more image builders.
         self.builders = []
         for image_name, image_config in self.config['images'].items():
-            logger.info(f'Loaded builder config for {image_name}: {image_config}')
+            logger.debug(f'Loaded builder config for {image_name}: {image_config}')
 
             # Each image gets it own Factset that inherits from the project Factset.
             image_facts = Factset(**self.facts.to_dict())
