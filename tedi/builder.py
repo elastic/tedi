@@ -1,12 +1,11 @@
 import docker
-import logging
 import shutil
 from pathlib import Path
 from .fileset import Fileset
 from .jinja_renderer import JinjaRenderer
+from .logging import getLogger
 
-
-logger = logging.getLogger('tedi.builder')
+logger = getLogger(__name__)
 
 
 class Builder():
@@ -61,4 +60,6 @@ class Builder():
         # field.
         for line in build_log:
             if 'stream' in line:
-                logger.debug(line['stream'])
+                message = line['stream'].strip()
+                if message:
+                    logger.debug(message)

@@ -1,4 +1,7 @@
 import os
+from .logging import getLogger
+
+logger = getLogger(__name__)
 
 
 class Factset(object):
@@ -22,6 +25,7 @@ class Factset(object):
         self['artifacts_dir'] = os.environ.get('ARTIFACTS_DIR')
         self['staging_build_num'] = os.environ.get('STAGING_BUILD_NUM')
         self.facts.update(dict(keyword_facts))
+        logger.debug(f'New Factset: {self}')
 
     def __repr__(self):
         return 'Factset(**%s)' % self.facts

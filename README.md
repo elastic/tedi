@@ -19,6 +19,11 @@ python setup.py test
 ### Building the images
 
 ``` shell
-tedi build --verbosity=info
+tedi build
 ```
 
+#### Debug logging
+
+``` shell
+TEDI_DEBUG=true tedi build
+```

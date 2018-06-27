@@ -1,10 +1,10 @@
-import logging
 import shutil
 from .paths import Paths
 from .project import Project
+from .logging import getLogger
 
 
-logger = logging.getLogger('tedi.commands')
+logger = getLogger('tedi.commands')
 paths = Paths()
 
 projects = []
