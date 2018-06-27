@@ -1,0 +1,11 @@
+#!/bin/bash
+#
+# Run a reduced test-suite (no MyPy) every time a file is modified.
+#
+# Super handy while doing Test Driven Development.
+
+for module in pytest-watch pytest-flake8; do
+    pip freeze | egrep -q "^${module}==" || pip install ${module}
+done
+
+pytest-watch --clear --wait -- -c setup.cfg.pytest-watch --flake8

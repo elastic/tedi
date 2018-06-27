@@ -16,6 +16,15 @@ pip install -e .
 python setup.py test
 ```
 
+#### Test Watcher
+
+A small wrapper is provided to run a fast suite of tests continuously while
+doing Test Driven Development. It uses pytest-watch with some options to skip
+slow things like coverage reporting and MyPy type checking.
+``` shell
+python setup.py testwatch
+```
+
 ### Building the images
 
 ``` shell
