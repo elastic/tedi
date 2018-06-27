@@ -10,7 +10,7 @@ class JinjaRenderer():
         return self.render_string(open(template_file).read())
 
     def render_string(self, template_string: str) -> str:
-        """Render a template_string with Jinja2. Return the result."""
+        """Render a template string with Jinja2. Return the result."""
         jinja_env = Environment(
             loader=FileSystemLoader('.'),
             undefined=StrictUndefined)
