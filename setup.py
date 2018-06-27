@@ -8,7 +8,7 @@ setup(name='tedi',
       author='Elastic',
       author_email='infra@elastic.co',
       packages=['tedi'],
-      python_requires='>=3.4<=4',
+      python_requires='>=3.6<=4',
       install_requires=[
           'click==6.7',
           'docker==3.0.1',
@@ -24,7 +24,7 @@ setup(name='tedi',
           'pytest-flake8==0.9.1',
           'pytest-mypy==0.3.0',
       ],
-      setup_requires=['pytest-runner'],
+      setup_requires=['pytest-runner==4.2.0'],
       entry_points='''
       [console_scripts]
       tedi=tedi.cli:cli
