@@ -11,7 +11,7 @@ setup(name='tedi',
       python_requires='>=3.6<=4',
       install_requires=[
           'click==6.7',
-          'docker==3.0.1',
+          'docker==3.4.1',
           'jinja2==2.10',
           'pyyaml==3.12',
           'wget==3.2',

@@ -13,7 +13,7 @@ facts:
 asset_sets:
   remote_snapshot:
     - filename: simple-software.tar.gz
-      source: http://example.org/downloads/simple-software-SNAPSHOT.tar.gz
+      source: file:///etc/issue
   remote_release:
     - filename: simple-software.tar.gz
-      source: http://example.org/downloads/simple-software.tar.gz
+      source: file:///etc/issue

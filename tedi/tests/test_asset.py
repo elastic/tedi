@@ -14,5 +14,5 @@ def asset() -> Asset:
 
 
 def test_aquire_creates_the_local_file(asset):
-    asset.acquire()
+    asset.acquire(paths.assets_path)
     assert (paths.assets_path / 'local-asset-fixture.tar.gz').exists()
