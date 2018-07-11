@@ -54,6 +54,6 @@ def test_build_creates_a_docker_image(builder):
     for image in docker_client.images.list():
         for tag in image.tags:
             print(tag)
-        if f'{test_image_name}:{builder.image_version}' in image.tags:
+        if f'{test_image_name}:latest' in image.tags:
             image_found_locally = True
     assert image_found_locally

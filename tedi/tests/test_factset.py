@@ -11,15 +11,6 @@ def test_can_test_membership(facts):
     assert 'sky_color' in facts
 
 
-def test_elastic_version_is_present(facts):
-    assert 'elastic_version' in facts
-
-
-def test_can_override_elastic_version_in_constructor():
-    facts = Factset(elastic_version='future')
-    assert facts['elastic_version'] == 'future'
-
-
 def test_can_set_facts_like_a_dictionary(facts):
     facts['key_canary'] = 'bird'
     assert facts['key_canary'] == 'bird'

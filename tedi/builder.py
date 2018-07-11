@@ -11,8 +11,7 @@ logger = getLogger(__name__)
 class Builder():
     def __init__(self, image_name, source_dir, target_dir, facts):
         self.image_name = image_name
-        self.image_version = facts['elastic_version']
-        self.image_tag = f'{self.image_name}:{self.image_version}'
+        self.image_fqin = self.image_name + ':' + facts['image_tag']
         self.source_dir = Path(source_dir)
         self.target_dir = Path(target_dir)
         self.files = Fileset(self.source_dir)
@@ -48,18 +47,23 @@ class Builder():
 
     def build(self):
         """Run a "docker build" on the rendered image files."""
-        logger.info(f'Building {self.image_tag}...')
-        image, build_log = self.docker.images.build(
-            path=str(self.target_dir),
-            tag=f'{self.image_tag}'
-        )
+        dockerfile = self.target_dir / 'Dockerfile'
+        if not dockerfile.exists():
+            logger.warn(f'No Dockerfile found at {dockerfile}. Cannot build {self.image_name}.')
+            return
+        else:
+            logger.info(f'Building {self.image_fqin}...')
+            image, build_log = self.docker.images.build(
+                path=str(self.target_dir),
+                tag=f'{self.image_fqin}'
+            )
 
-        # The output you'd normally get on the terminal from `docker build` can
-        # be found in the build log, along with some extra metadata lines we
-        # don't care about. The good stuff is in the lines that have a 'stream'
-        # field.
-        for line in build_log:
-            if 'stream' in line:
-                message = line['stream'].strip()
-                if message:
-                    logger.debug(message)
+            # The output you'd normally get on the terminal from `docker build` can
+            # be found in the build log, along with some extra metadata lines we
+            # don't care about. The good stuff is in the lines that have a 'stream'
+            # field.
+            for line in build_log:
+                if 'stream' in line:
+                    message = line['stream'].strip()
+                    if message:
+                        logger.debug(message)

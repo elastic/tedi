@@ -1,5 +1,6 @@
 import yaml
 import logging
+import sys
 from .paths import Paths
 from .builder import Builder
 from .factset import Factset
@@ -12,9 +13,15 @@ paths = Paths()
 class Project():
     def __init__(self, path):
         self.path = path
+        config_path = self.path / 'tedi.yml'
 
-        with open(self.path / 'tedi.yml') as config_file:
-            self.config = yaml.load(config_file.read())
+        try:
+            with open(config_path) as config_file:
+                self.config = yaml.load(config_file.read())
+        except FileNotFoundError:
+            logger.critical(f'No configuration file found at {config_path}')
+            sys.exit(1)
+
         assert self.config  # Because the YAML library returns None for empty files.
         logger.debug(f'Loaded project config from {self.path}: {self.config}')
 
@@ -36,7 +43,7 @@ class Project():
             builder = Builder(
                 image_name=image_name,
                 source_dir=self.path,
-                target_dir=paths.renders_path / image_name,
+                target_dir=paths.render_path / image_name,
                 facts=image_facts,
             )
             self.builders.append(builder)

@@ -6,8 +6,6 @@ from ..assetset import Assetset
 from ..paths import Paths
 
 paths = Paths()
-
-
 fixtures_dir_path = join(dirname(__file__), 'fixtures', 'assets')
 
 

@@ -1,7 +1,9 @@
 import os
 from .logging import getLogger
+from .paths import Paths
 
 logger = getLogger(__name__)
+paths = Paths()
 
 
 class Factset(object):
@@ -17,14 +19,30 @@ class Factset(object):
     None deletes it entirely.
     """
     def __init__(self, **keyword_facts):
-        self.facts = {}
-        self['elastic_version'] = '6.2.4'
+        self.facts = keyword_facts
 
-        # If these environment variables are set, they will become facts.
-        # If they are not set, they will be None, and thus discarded.
-        self['artifacts_dir'] = os.environ.get('ARTIFACTS_DIR')
-        self['staging_build_num'] = os.environ.get('STAGING_BUILD_NUM')
-        self.facts.update(dict(keyword_facts))
+        # If these environment variables are set, they will forcibly
+        # override the corresponding facts.
+        environment_facts = [
+            'ARTIFACTS_DIR',
+            'ELASTIC_VERSION',
+            'STAGING_BUILD_NUM',
+        ]
+        for fact in environment_facts:
+            if fact in os.environ:
+                self[fact.lower()] = os.environ[fact]
+
+        # Determine a Docker tag, like '6.3.0' or '6.4.0-SNAPSHOT'
+        if 'staging_build_num' in self and 'elastic_version' in self:
+            logger.debug('Setting image_tag to include staging_build_num.')
+            self['image_tag'] = self['elastic_version'] + '-' + self['staging_build_num']
+        elif 'elastic_version' in self:
+            logger.debug('Setting image_tag to elastic_version.')
+            self['image_tag'] = self['elastic_version']
+        else:
+            logger.warn('Setting image_tag to "latest"')
+            self['image_tag'] = 'latest'
+
         logger.debug(f'New Factset: {self}')
 
     def __repr__(self):

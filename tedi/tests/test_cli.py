@@ -16,7 +16,7 @@ def output_of(command):
 
 def assert_in_file(test_file, string):
     invoke('render')
-    assert string in (paths.renders_path / test_file).open().read()
+    assert string in (paths.render_path / test_file).open().read()
 
 
 def assert_command_cleans_path(path, command):
@@ -33,11 +33,11 @@ def test_render_command_has_valid_help_text():
 
 
 def test_clean_command_removes_rendered_files():
-    assert_command_cleans_path(paths.renders_path, 'clean')
+    assert_command_cleans_path(paths.render_path, 'clean')
 
 
-def test_render_command_cleans_renders_path():
-    assert_command_cleans_path(paths.renders_path, 'render')
+def test_render_command_cleans_render_path():
+    assert_command_cleans_path(paths.render_path, 'render')
 
 
 def test_clean_command_removes_assets_with_clean_assets_flag():
