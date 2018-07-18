@@ -5,12 +5,15 @@ those templates to a build context, and arranges for Docker to build it.
 
 ## Usage
 
-Tedi is a CLI tool.
+Tedi is a CLI tool written in Python 3.6. It can be installed with Pip or run
+as a Docker container.
+
+If you are interested in using Tedi but not in developing it, Docker is the
+recommend approach.
 
 ### Running in Docker
 
-The recommended way to run Tedi is within Docker. First, build an image of Tedi
-itself:
+First, build an image of Tedi itself:
 
 ``` shell
 docker build -t tedi .
