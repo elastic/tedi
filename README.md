@@ -31,6 +31,13 @@ docker run --rm -it -v /var/run/docker.sock:/var/run/docker.sock -v $MY_PROJECT:
   where Tedi expects to find it. In particular, it expects to a find a `tedi.yml`
   there (see below).
 
+Verbose output, including the output from the Docker build, can be requested by
+setting the `TEDI_DEBUG` environment variable to `true`:
+
+``` shell
+docker run -e TEDI_DEBUG=true [...] tedi build
+```
+
 You can explore other commands via the built-in help:
 
 ``` shell
