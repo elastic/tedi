@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/elastic/tedi.svg?branch=master)](https://travis-ci.org/elastic/tedi)
+
 # Tedi: A Template Engine for Docker Images
 Tedi is a tool for building Docker images for your project. It adds a templating
 layer to your Dockerfile and any other files you choose. It then renders
