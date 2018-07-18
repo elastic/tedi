@@ -43,7 +43,7 @@ to run `docker build /tmp/soup`, then everything under `/tmp/soup` is the build
 context.
 
 Each image declared in `tedi.yml` produces a complete build context, which is
-stored in it's own directory under the hidden `.tedi` directory.
+stored in its own directory under the hidden `.tedi` directory.
 
 #### Fact
 A datum that is needed to correctly build an image. Mostly used for
