@@ -3,7 +3,7 @@
 ### Initial setup
 
 ``` shell
-git clone git@github.com:jarpy/tedi.git # FIXME
+git clone git@github.com:elastic/tedi.git
 cd tedi
 virtualenv --python=python3.6 venv
 . venv/bin/activate
