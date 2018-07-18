@@ -58,7 +58,7 @@ Like this:
 # Tedi can produce multiple images for a single project.
 # Declare them under the "images" key.
 images:
-  # The image names should be the qualified path in your Docker registry.
+  # The image name should be the qualified path in your Docker registry.
   elasticsearch/elasticsearch-full:
     # Differences between images can be expressed with "facts". Facts are used
     # for variable expansion in template files, notably the Dockerfile template.
