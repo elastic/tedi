@@ -25,8 +25,9 @@ Then you can run it with Docker:
 docker run --rm -it -v /var/run/docker.sock:/var/run/docker.sock -v $MY_PROJECT:/mnt tedi build
 ```
 
-* Because Tedi is itself a Docker client, we mount the Docker socket inside.
-* We also mount the directory of whatever project we want to build at `/mnt`,
+* Because Tedi is itself a Docker client, we mount the Docker socket inside
+  the container.
+* We also mount the directory of whatever project we want to build on `/mnt`,
   where Tedi expects to find it. In particular, it expects to a find a `tedi.yml`
   there (see below).
 
@@ -36,9 +37,11 @@ You can explore other commands via the built-in help:
 docker run --rm -it tedi --help
 ```
 
-### `tedi.yml`
+### Declaring `tedi.yml`
 
-To build a Docker image for your project, create a file at `./tedi/tedi.yml`.
+To build a Docker image for your project, create a file within your project at
+`./tedi/tedi.yml`.
+
 Like this:
 
 ``` yaml
