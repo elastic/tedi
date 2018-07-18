@@ -1,0 +1,5 @@
+images:
+  repository/image: {}
+
+facts:
+  docker_registry: docker.example.org

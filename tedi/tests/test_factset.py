@@ -60,3 +60,11 @@ def test_update_updates_facts_from_a_dict(facts):
 def test_update_updates_facts_from_keywords(facts):
     facts.update(sky_color='pink')
     assert facts['sky_color'] == 'pink'
+
+
+def test_get_returns_none_on_missing_key(facts):
+    assert facts.get('complaints') is None
+
+
+def test_get_returns_default_on_missing_key_when_asked(facts):
+    assert facts.get('first_prize', 'consolation_prize') == 'consolation_prize'

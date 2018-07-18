@@ -6,9 +6,18 @@ from ..factset import Factset
 from unittest.mock import Mock
 
 
+def get_project(name) -> Project:
+    return Project(Path(f'tedi/tests/fixtures/projects/{name}'))
+
+
 @fixture
 def project() -> Project:
-    return Project(Path('tedi/tests/fixtures/projects/simple'))
+    return get_project('simple')
+
+
+@fixture
+def project_with_docker_registry() -> Project:
+    return get_project('with-docker-registry')
 
 
 def test_path_is_a_path(project):
@@ -43,3 +52,8 @@ def test_projects_have_a_factset(project):
 
 def test_projects_can_declare_project_level_facts(project):
     assert project.facts['animal'] == 'giraffe'
+
+
+def test_projects_will_name_images_with_a_custom_docker_registry(project_with_docker_registry):
+    for builder in project_with_docker_registry.builders:
+        assert builder.image_fqin.startswith('docker.example.org/')

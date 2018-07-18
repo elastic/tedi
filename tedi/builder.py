@@ -11,7 +11,13 @@ logger = getLogger(__name__)
 class Builder():
     def __init__(self, image_name, source_dir, target_dir, facts):
         self.image_name = image_name
-        self.image_fqin = f'{facts["docker_registry"]}/{self.image_name}:{facts["image_tag"]}'
+
+        registry = facts.get('docker_registry')
+        if registry:
+            self.image_fqin = f'{registry}/{self.image_name}:{facts["image_tag"]}'
+        else:
+            self.image_fqin = f'{self.image_name}:{facts["image_tag"]}'
+
         self.source_dir = Path(source_dir)
         self.target_dir = Path(target_dir)
         self.files = Fileset(self.source_dir)

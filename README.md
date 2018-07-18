@@ -72,6 +72,9 @@ images:
 # Global facts apply to all images.
 facts:
   elastic_version: 6.3.1
+
+  # Some facts have explicit support within Tedi. Setting the "docker_registry"
+  # will give images fully qualifed names with that registry.
   docker_registry: docker.elastic.co
 ```
 

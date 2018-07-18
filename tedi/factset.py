@@ -80,6 +80,9 @@ class Factset(object):
     def __contains__(self, key):
         return key in self.facts
 
+    def get(self, key, default=None):
+        return self.facts.get(key, default)
+
     def to_dict(self):
         return self.facts
 
