@@ -74,7 +74,8 @@ facts:
   elastic_version: 6.3.1
 
   # Some facts have explicit support within Tedi. Setting the "docker_registry"
-  # will give images fully qualifed names with that registry.
+  # fact will give images fully qualifed names within that registry.
+  # Like: "docker.elastic.co/elasticsearch/elasticsearch-oss"
   docker_registry: docker.elastic.co
 ```
 
