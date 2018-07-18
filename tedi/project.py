@@ -19,7 +19,7 @@ class Project():
             with open(config_path) as config_file:
                 self.config = yaml.load(config_file.read())
         except FileNotFoundError:
-            logger.critical(f'No configuration file found at {config_path}')
+            logger.critical(f'No configuration file found at {config_path.resolve()}')
             sys.exit(1)
 
         assert self.config  # Because the YAML library returns None for empty files.
