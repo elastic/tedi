@@ -10,16 +10,16 @@ without invoking `docker build`.
 Stage transparency
 ------------------
 The results of each stage shall be expressed as human-readable files on the
-filesystem. These are accessible and familiar. It also allow "breaking in"
+filesystem. These are accessible and familiar. It also allows "breaking in"
 to the build process at various points when needed for debugging.
 
 In particular, the _build context_ which is passed to Docker should be in
-the standard, on-disk format, so that Tedi can be used to render the context
+the standard on-disk format so that Tedi can be used to render the context
 but is not required to execute the build (though it can do that, too).
 
 Minimal path manipulation
 -------------------------
-File and URL paths shall be as flat as possible. When complex paths must be
+File and URL paths shall be as flat as possible. When a complex path must be
 manipulated, it should done once only, with the intent of shortening,
 flattening, simplifying the path.
 
@@ -32,7 +32,7 @@ Fail fast
 ---------
 Be strict about proceeding with each stage of the build. For example, some
 systems silently continue after rendering null values to a template. That's
-an error and it should not be buried. Tedi should halt abruptly and loudly!
+an error. Tedi should halt abruptly and loudly!
 
 Glossary
 ========
@@ -47,7 +47,7 @@ stored in its own directory under the hidden `.tedi` directory.
 
 #### Fact
 A datum that is needed to correctly build an image. Mostly used for
-string expansions in Jinja2 templates, such as the `Dockerfile` templates. The
+string expansions in Jinja2 templates, such as `Dockerfile` templates. The
 current `elastic_version` is a good example of a fact. Facts are generally
 defined in `tedi/tedi.yml` either on at the project level:
 
