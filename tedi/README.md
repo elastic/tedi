@@ -28,6 +28,12 @@ Get logic out of templates
 If logic, particularly string manipulation, can be provided in Tedi that can
 reduce the need for such logic in template files, Tedi should aim to provide it.
 
+Fail fast
+---------
+Be strict about proceeding with each stage of the build. For example, some
+systems silently continue after rendering null values to a template. That's
+an error and it should not be buried. Tedi should halt abruptly and loudly!
+
 Glossary
 ========
 
