@@ -11,7 +11,7 @@ Stage transparency
 ------------------
 The results of each stage shall be expressed as human-readable files on the
 filesystem. These are accessible and familiar. It also allow "breaking in"
-to the build process at various point when needed for debugging.
+to the build process at various points when needed for debugging.
 
 In particular, the _build context_ which is passed to Docker should be in
 the standard, on-disk format, so that Tedi can be used to render the context
