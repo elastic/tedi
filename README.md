@@ -1,11 +1,25 @@
+# Tedi: A Template Engine for Docker Images
+Tedi is a tool for building Docker images for your project. It adds a templating
+layer to your Dockerfile and any other files you choose. It then renders
+those templates to a build context, and arranges for Docker to build it.
+
 ## Usage
+
+Tedi is a CLI tool.
 
 ### Running in Docker
 
-The recommended way to run Tedi is within Docker:
+The recommended way to run Tedi is within Docker. First, build an image of Tedi
+itself:
 
 ``` shell
-docker run --rm -it -v /var/run/docker.sock:/var/run/docker.sock -v $PWD:/mnt tedi build
+docker build -t tedi .
+```
+
+Then you can run it with Docker:
+
+``` shell
+docker run --rm -it -v /var/run/docker.sock:/var/run/docker.sock -v $MY_PROJECT:/mnt tedi build
 ```
 
 * Because Tedi is itself a Docker client, we mount the Docker socket inside.
@@ -13,9 +27,15 @@ docker run --rm -it -v /var/run/docker.sock:/var/run/docker.sock -v $PWD:/mnt te
   where Tedi expects to find it. In particular, it expects to a find a `tedi.yml`
   there (see below).
 
+You can explore other commands via the built-in help:
+
+``` shell
+docker run --rm -it tedi --help
+```
+
 ### `tedi.yml`
 
-To build a Docker image for your project with, create a file at `./tedi/tedi.yml`.
+To build a Docker image for your project, create a file at `./tedi/tedi.yml`.
 Like this:
 
 ``` yaml
@@ -40,13 +60,14 @@ facts:
 ```
 
 ### Build context files
-Add any other files that are needed to complete your image to `./tedi`. They
-will be provided as the Docker build context, via a staging area in `./.tedi`.
+Add any other files that are needed to complete your image to the `tedi`
+directory. They will be provided as the Docker build context, via a staging
+area in the hidden directory `.tedi`.
 
 Both plain files and Jinja2 templates are supported.
 
-The contents of `.tedi` are temporary and can be regenerated. You'll likely want
-to add it to your `.gitignore` file.
+The contents of `.tedi` are temporary and can be regenerated. You'll likely
+want to add it to your `.gitignore` file.
 
 #### Plain files
 Any plain files, including arbitrarily deep directory structures will be copied
@@ -60,6 +81,12 @@ to create (at least) a Dockerfile template at `./tedi/Dockerfile.j2`.
 The template engine will expand variables from the _facts_ defined in `tedi.yml`.
 
 ## Development
+
+Tedi is written in Python 3.6 with tests in pytest. Some type annotations can be
+found sprinkled around, for consumption by [mypy](http://mypy-lang.org/).
+
+There's a [seperate README](./tedi/README.md) covering some of the design and
+implementation details.
 
 ### Initial setup
 
@@ -81,19 +108,7 @@ python setup.py test
 
 A small wrapper is provided to run a fast suite of tests continuously while
 doing Test Driven Development. It uses pytest-watch with some options to skip
-slow things like coverage reporting and MyPy type checking.
+slow things like coverage reporting and mypy type checking.
 ``` shell
 python setup.py testwatch
-```
-
-### Building the images
-
-``` shell
-tedi build
-```
-
-#### Debug logging
-
-``` shell
-TEDI_DEBUG=true tedi build
 ```
