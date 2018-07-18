@@ -39,8 +39,25 @@ facts:
   docker_registry: docker.elastic.co
 ```
 
+### Build context files
+Add any other files that are needed to complete your image to `./tedi`. They
+will be provided as the Docker build context, via a staging area in `./.tedi`.
 
+Both plain files and Jinja2 templates are supported.
 
+The contents of `.tedi` are temporary and can be regenerated. You'll likely want
+to add it to your `.gitignore` file.
+
+#### Plain files
+Any plain files, including arbitrarily deep directory structures will be copied
+into the Docker build context.
+
+#### Jinja2
+Any files with a `.j2` extension will be rendered through the Jinja2 template
+engine before being added to the Docker build context. Generally, you will want
+to create (at least) a Dockerfile template at `./tedi/Dockerfile.j2`.
+
+The template engine will expand variables from the _facts_ defined in `tedi.yml`.
 
 ## Development
 
