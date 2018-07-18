@@ -50,7 +50,7 @@ docker run --rm -it tedi --help
 ### Declaring `tedi.yml`
 
 To build a Docker image for your project, create a file within your project at
-`./tedi/tedi.yml`.
+`tedi/tedi.yml`.
 
 Like this:
 
@@ -96,7 +96,7 @@ into the Docker build context.
 #### Jinja2
 Any files with a `.j2` extension will be rendered through the Jinja2 template
 engine before being added to the Docker build context. Generally, you will want
-to create (at least) a Dockerfile template at `./tedi/Dockerfile.j2`.
+to create (at least) a Dockerfile template at `tedi/Dockerfile.j2`.
 
 The template engine will expand variables from the _facts_ defined in `tedi.yml`.
 
