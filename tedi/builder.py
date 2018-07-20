@@ -1,22 +1,23 @@
 import docker
 import shutil
 from pathlib import Path
+from typing import List
 from .fileset import Fileset
 from .jinja_renderer import JinjaRenderer
+from .factset import Factset
 from .logging import getLogger
 
 logger = getLogger(__name__)
 
 
 class Builder():
-    def __init__(self, image_name, source_dir, target_dir, facts):
-        self.image_name = image_name
-
-        registry = facts.get('docker_registry')
-        if registry:
-            self.image_fqin = f'{registry}/{self.image_name}:{facts["image_tag"]}'
+    def __init__(self, image_name: str, source_dir: Path, target_dir: Path,
+                 facts: Factset, image_aliases: List[str]=None) -> None:
+        self.image_name = f'{image_name}:{facts["image_tag"]}'
+        if image_aliases:
+            self.image_aliases = [f'{alias}:{facts["image_tag"]}' for alias in image_aliases]
         else:
-            self.image_fqin = f'{self.image_name}:{facts["image_tag"]}'
+            self.image_aliases = []
 
         self.source_dir = Path(source_dir)
         self.target_dir = Path(target_dir)
@@ -57,19 +58,23 @@ class Builder():
         if not dockerfile.exists():
             logger.warn(f'No Dockerfile found at {dockerfile}. Cannot build {self.image_name}.')
             return
-        else:
-            logger.info(f'Building {self.image_fqin}...')
-            image, build_log = self.docker.images.build(
-                path=str(self.target_dir),
-                tag=f'{self.image_fqin}'
-            )
 
-            # The output you'd normally get on the terminal from `docker build` can
-            # be found in the build log, along with some extra metadata lines we
-            # don't care about. The good stuff is in the lines that have a 'stream'
-            # field.
-            for line in build_log:
-                if 'stream' in line:
-                    message = line['stream'].strip()
-                    if message:
-                        logger.debug(message)
+        logger.info(f'Building {self.image_name}...')
+        image, build_log = self.docker.images.build(
+            path=str(self.target_dir),
+            tag=f'{self.image_name}'
+        )
+
+        # The output you'd normally get on the terminal from `docker build` can
+        # be found in the build log, along with some extra metadata lines we
+        # don't care about. The good stuff is in the lines that have a 'stream'
+        # field.
+        for line in build_log:
+            if 'stream' in line:
+                message = line['stream'].strip()
+                if message:
+                    logger.debug(message)
+
+        for alias in self.image_aliases:
+            logger.info(f'Tagging {self.image_name} as {alias}')
+            image.tag(alias)

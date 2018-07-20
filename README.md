@@ -60,25 +60,29 @@ Like this:
 # Tedi can produce multiple images for a single project.
 # Declare them under the "images" key.
 images:
-  # The image name should be the qualified path in your Docker registry.
-  elasticsearch/elasticsearch-full:
+  elasticsearch-full:
+    # Aliases will cause the image to have several names. Having both a short
+    # local name and a fully qualified name in a registry is particularly handy.
+    aliases:
+      - elasticsearch
+      - docker.elastic.co/elasticsearch/elasticsearch
+
     # Differences between images can be expressed with "facts". Facts are used
     # for variable expansion in template files, notably the Dockerfile template.
     facts:
       image_flavor: full
 
-  elasticsearch/elasticsearch-oss:
+  elasticsearch-oss:
     facts:
       image_flavor: oss
+    aliases:
+      - docker.elastic.co/elasticsearch/elasticsearch-oss
 
 # Global facts apply to all images.
 facts:
+  # Some facts have explicit support within Tedi. Setting the "elastic_version"
+  # fact will arrange for image tags to be versioned correctly.
   elastic_version: 6.3.1
-
-  # Some facts have explicit support within Tedi. Setting the "docker_registry"
-  # fact will give images fully qualifed names within that registry.
-  # Like: "docker.elastic.co/elasticsearch/elasticsearch-oss"
-  docker_registry: docker.elastic.co
 ```
 
 ### Build context files

@@ -23,6 +23,16 @@ class Factset(object):
 
         # If these environment variables are set, they will forcibly
         # override the corresponding facts.
+        #
+        # Having explicit support for these is useful while we migrate from the
+        # old build system. It allows Tedi to support established conventions
+        # like setting the "STAGING_BUILD_NUM" environment variable to build a
+        # release candidate, for example.
+        #
+        # However, we should aim to remove this support, since it's opposed to
+        # the goal of having Tedi be a generic build system for Docker
+        # images. (Ideally, Tedi wouldn't have any knowledge of "Elastic
+        # stuff").
         environment_facts = [
             'ARTIFACTS_DIR',
             'ELASTIC_VERSION',
@@ -32,7 +42,8 @@ class Factset(object):
             if fact in os.environ:
                 self[fact.lower()] = os.environ[fact]
 
-        # Determine a Docker tag, like '6.3.0' or '6.4.0-SNAPSHOT'
+        # Synthesize a fact to represent the Docker tag, like '6.3.0' or '6.4.0-SNAPSHOT'.
+        # Again, it would be better if Tedi didn't have to know about this.
         if 'staging_build_num' in self and 'elastic_version' in self:
             logger.debug('Setting image_tag to include staging_build_num.')
             self['image_tag'] = self['elastic_version'] + '-' + self['staging_build_num']

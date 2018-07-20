@@ -47,6 +47,7 @@ class Project():
                 source_dir=self.path,
                 target_dir=paths.render_path / image_name,
                 facts=image_facts,
+                image_aliases=image_config.get('aliases')
             )
             self.builders.append(builder)
 
