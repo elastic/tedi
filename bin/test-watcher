@@ -8,4 +8,4 @@ for module in pytest-watch pytest-flake8; do
     pip freeze | egrep -q "^${module}==" || pip install ${module}
 done
 
-pytest-watch --clear --wait -- -c setup.cfg.pytest-watch --flake8 --maxfail=1
+pytest-watch --clear --wait -- -c setup.cfg.pytest-watch --flake8
