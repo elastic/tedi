@@ -11,7 +11,7 @@ Tedi is a CLI tool written in Python 3.6. It can be installed with Pip or run
 as a Docker container.
 
 If you are interested in using Tedi but not in developing it, Docker is the
-recommend approach.
+recommended approach.
 
 ### Running in Docker
 
