@@ -34,3 +34,10 @@ def build(clean_assets):
     commands.clean(clean_assets)
     commands.render()
     commands.build()
+
+
+@cli.command()
+def acquire():
+    """Acquire assets."""
+    logger.debug('acquire subcommand called from cli')
+    commands.acquire()

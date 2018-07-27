@@ -31,3 +31,8 @@ def clean(clean_assets=False):
 def build():
     """Build the images from the rendered files"""
     Project(paths.project_path).build()
+
+
+def acquire():
+    """Acquire assets."""
+    Project(paths.project_path).acquire_assets()

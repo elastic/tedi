@@ -5,6 +5,7 @@ from .paths import Paths
 from .builder import Builder
 from .factset import Factset
 from .assetset import Assetset
+from .asset import Asset
 
 logger = logging.getLogger('tedi.project')
 paths = Paths()
@@ -52,8 +53,13 @@ class Project():
             self.builders.append(builder)
 
         self.asset_sets = {}
+        # FIXME: Teach Assetset to instantiate itself from a config dict.
+        # FIXME: ie. Move this logic to the Assetset class.
         if 'asset_sets' in self.config:
-            for asset_set_name, assets in self.config['asset_sets'].items():
+            for asset_set_name, asset_configs in self.config['asset_sets'].items():
+                assets = []
+                for config in asset_configs:
+                    assets.append(Asset(config['filename'], config['source']))
                 self.asset_sets[asset_set_name] = Assetset(assets)
 
     def __repr__(self):
@@ -66,3 +72,8 @@ class Project():
     def build(self):
         for builder in self.builders:
             builder.build()
+
+    def acquire_assets(self):
+        for name, asset_set in self.asset_sets.items():
+            print(asset_set)
+            asset_set.acquire()

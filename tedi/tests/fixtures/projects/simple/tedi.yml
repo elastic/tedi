@@ -9,11 +9,13 @@ images:
 
 facts:
   animal: giraffe
+  cow_color: yellow
 
 asset_sets:
-  remote_snapshot:
-    - filename: simple-software.tar.gz
+  simple_asset_set:
+    - filename: simple-software-1.tar.gz
       source: file:///etc/issue
-  remote_release:
-    - filename: simple-software.tar.gz
+    - filename: simple-software-2.tar.gz
       source: file:///etc/issue
+
+default_asset_set: simple_asset_set
