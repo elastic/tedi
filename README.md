@@ -88,6 +88,19 @@ facts:
 # the image. Declaring different asset sets is good way to build different
 # variants of your project without having to have a bunch of conditionals in
 # your templates.
+asset_sets:
+
+  # The "default" asset set is special and will be used unless you specify
+  # otherwise.
+  default:
+    # Global facts can be used in asset declarations.
+    - filename: elasticsearch-{{ elastic_version }}.tar.gz
+      source: https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{{ elastic_version }}.tar.gz
+
+  # Alternative asset sets can be used with the "--asset-set" CLI flag.
+  remote_snapshot:
+    - filename: elasticsearch-{{elastic_version}}.tar.gz
+      source: https://snapshots.elastic.co/downloads/elasticsearch/elasticsearch-{{elastic_version}}-SNAPSHOT.tar.gz
 
 ```
 
