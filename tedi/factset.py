@@ -51,7 +51,7 @@ class Factset(object):
             logger.debug('Setting image_tag to elastic_version.')
             self['image_tag'] = self['elastic_version']
         else:
-            logger.warn('Setting image_tag to "latest"')
+            logger.debug('Setting image_tag to "latest"')
             self['image_tag'] = 'latest'
 
         logger.debug(f'New Factset: {self}')

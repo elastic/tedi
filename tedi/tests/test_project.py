@@ -46,4 +46,5 @@ def test_projects_have_a_factset(project):
 
 
 def test_projects_can_declare_project_level_facts(project):
-    assert project.facts['animal'] == 'giraffe'
+    assert project.facts['animal'] == 'cow'
+    assert project.facts['cow_color'] is None

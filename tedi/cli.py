@@ -28,16 +28,20 @@ def clean(clean_assets):
 
 @cli.command()
 @click.option('--clean-assets', is_flag=True, help='Reaquire assets.')
-def build(clean_assets):
+@click.option('--asset-set', default='default', help='Specify the asset set to build with.')
+def build(clean_assets, asset_set):
     """Build images."""
     logger.debug('build subcommand called from cli')
+    # FIXME: Should we auto-clean assets if the assetset changes?
     commands.clean(clean_assets)
     commands.render()
+    commands.acquire(asset_set)
     commands.build()
 
 
 @cli.command()
-def acquire():
+@click.option('--asset-set', default='default', help='Specify the asset set to acquire.')
+def acquire(asset_set):
     """Acquire assets."""
     logger.debug('acquire subcommand called from cli')
-    commands.acquire()
+    commands.acquire(asset_set)

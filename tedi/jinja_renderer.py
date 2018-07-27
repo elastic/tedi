@@ -1,7 +1,7 @@
-import sys
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 from jinja2.exceptions import UndefinedError
 from .logging import getLogger
+from .process import fail
 
 logger = getLogger(__name__)
 
@@ -26,5 +26,5 @@ class JinjaRenderer():
             logger.critical('Template rendering failed.')
             logger.critical(f'The Jinja2 template engine said: "{e.message}".')
             logger.critical('Do you need to declare this as a fact in tedi.yml?')
-            sys.exit(1)
+            fail()
         return rendered

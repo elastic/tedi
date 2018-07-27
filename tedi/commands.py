@@ -33,6 +33,6 @@ def build():
     Project(paths.project_path).build()
 
 
-def acquire():
+def acquire(asset_set=None):
     """Acquire assets."""
-    Project(paths.project_path).acquire_assets()
+    Project(paths.project_path).acquire_assets(asset_set)

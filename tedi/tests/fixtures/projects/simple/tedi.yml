@@ -8,14 +8,15 @@ images:
       image_flavor: chocolate
 
 facts:
-  animal: giraffe
-  cow_color: yellow
+  animal: cow
+  cow_color: Null
 
 asset_sets:
-  simple_asset_set:
-    - filename: simple-software-1.tar.gz
+  default:
+    - filename: default.tar.gz
       source: file:///etc/issue
-    - filename: simple-software-2.tar.gz
+  special:
+    - filename: special.tar.gz
       source: file:///etc/issue
 
-default_asset_set: simple_asset_set
+default_asset_set: general

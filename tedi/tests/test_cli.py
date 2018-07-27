@@ -40,10 +40,10 @@ def assert_command_cleans_path(runner, path, command):
     assert canary.exists() is False
 
 
-def assert_command_acquires_asset(runner, command, filename):
+def command_acquires_asset(runner, command, filename):
     """Check that an asset file was acquired to the assets dir."""
-    assert runner.run('acquire').exit_code == 0
-    assert (paths.assets_path / filename).exists()
+    assert runner.run(command).exit_code == 0
+    return (paths.assets_path / filename).exists()
 
 
 def test_render_command_has_valid_help_text():
@@ -73,4 +73,14 @@ def test_build_command_removes_assets_with_clean_assets_flag():
 
 def test_acquire_command_acquires_default_assets():
     with project_runner() as runner:
-        assert_command_acquires_asset(runner, 'acquire', 'simple-software-1.tar.gz')
+        assert command_acquires_asset(runner, 'acquire', 'default.tar.gz')
+
+
+def test_acquire_command_does_not_acquire_non_default_assets():
+    with project_runner() as runner:
+        assert not command_acquires_asset(runner, 'acquire', 'special.tar.gz')
+
+
+def test_acquire_command_acquires_assets_specified_by_asset_set_flag():
+    with project_runner() as runner:
+        assert command_acquires_asset(runner, 'acquire --asset-set=special', 'special.tar.gz')

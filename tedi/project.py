@@ -1,11 +1,11 @@
 import yaml
 import logging
-import sys
 from .paths import Paths
 from .builder import Builder
 from .factset import Factset
 from .assetset import Assetset
 from .asset import Asset
+from .process import fail
 
 logger = logging.getLogger('tedi.project')
 paths = Paths()
@@ -21,7 +21,7 @@ class Project():
                 self.config = yaml.load(config_file.read())
         except FileNotFoundError:
             logger.critical(f'No configuration file found at {config_path.resolve()}')
-            sys.exit(1)
+            fail()
 
         assert self.config  # Because the YAML library returns None for empty files.
         logger.debug(f'Loaded project config from {self.path}: {self.config}')
@@ -59,6 +59,9 @@ class Project():
             for asset_set_name, asset_configs in self.config['asset_sets'].items():
                 assets = []
                 for config in asset_configs:
+                    if 'filename' not in config or 'source' not in config:
+                        logger.critical('Each asset in tedi.yml must declare "filename" and "source".')
+                        fail()
                     assets.append(Asset(config['filename'], config['source']))
                 self.asset_sets[asset_set_name] = Assetset(assets)
 
@@ -73,7 +76,13 @@ class Project():
         for builder in self.builders:
             builder.build()
 
-    def acquire_assets(self):
-        for name, asset_set in self.asset_sets.items():
-            print(asset_set)
-            asset_set.acquire()
+    def acquire_assets(self, asset_set_name: str):
+        if not self.asset_sets:
+            logger.debug('No asset sets for this project. Will not acquire any files.')
+            return
+
+        if asset_set_name not in self.asset_sets:
+            logger.critical(f'Asset set "{asset_set_name}" not defined in tedi.yml.')
+            fail()
+
+        self.asset_sets[asset_set_name].acquire()
