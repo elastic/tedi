@@ -83,6 +83,12 @@ facts:
   # Some facts have explicit support within Tedi. Setting the "elastic_version"
   # fact will arrange for image tags to be versioned correctly.
   elastic_version: 6.3.1
+
+# Asset sets declare files that need be acquired (downloaded) before building
+# the image. Declaring different asset sets is good way to build different
+# variants of your project without having to have a bunch of conditionals in
+# your templates.
+
 ```
 
 ### Build context files
