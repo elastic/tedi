@@ -10,6 +10,8 @@ images:
 facts:
   animal: cow
   cow_color: Null
+  fact_based_filename: filename-from-fact
+  fact_based_source: file:///source-from-fact
 
 asset_sets:
   default:
@@ -18,5 +20,9 @@ asset_sets:
   special:
     - filename: special.tar.gz
       source: file:///etc/issue
+  fact_based_assets:
+    - filename: '{{ fact_based_filename }}.tar.gz'
+      source: '{{ fact_based_source }}'
+
 
 default_asset_set: general

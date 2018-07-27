@@ -6,6 +6,7 @@ from .factset import Factset
 from .assetset import Assetset
 from .asset import Asset
 from .process import fail
+from .jinja_renderer import JinjaRenderer
 
 logger = logging.getLogger('tedi.project')
 paths = Paths()
@@ -30,6 +31,8 @@ class Project():
             self.facts = Factset(**self.config['facts'])
         else:
             self.facts = Factset()
+
+        renderer = JinjaRenderer(self.facts)
 
         # A project has a collection of one or more image builders.
         self.builders = []
@@ -62,7 +65,11 @@ class Project():
                     if 'filename' not in config or 'source' not in config:
                         logger.critical('Each asset in tedi.yml must declare "filename" and "source".')
                         fail()
-                    assets.append(Asset(config['filename'], config['source']))
+
+                    # Expand any facts in the asset declaration.
+                    filename = renderer.render_string(config['filename'])
+                    source = renderer.render_string(config['source'])
+                    assets.append(Asset(filename, source))
                 self.asset_sets[asset_set_name] = Assetset(assets)
 
     def __repr__(self):

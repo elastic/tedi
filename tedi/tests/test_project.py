@@ -41,6 +41,12 @@ def test_projects_have_a_dictionary_of_asset_sets(project):
         assert isinstance(asset_set, Assetset)
 
 
+def test_projects_expand_facts_in_assets(project):
+    asset = project.asset_sets['fact_based_assets'].assets[0]
+    assert asset.filename == 'filename-from-fact.tar.gz'
+    assert asset.source == 'file:///source-from-fact'
+
+
 def test_projects_have_a_factset(project):
     assert isinstance(project.facts, Factset)
 
