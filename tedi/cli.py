@@ -44,4 +44,7 @@ def build(clean_assets, asset_set):
 def acquire(asset_set):
     """Acquire assets."""
     logger.debug('acquire subcommand called from cli')
+    # Since the user explicitly called "acquire", make sure they get fresh assets
+    # by cleaning the assets dir first.
+    commands.clean(clean_assets=True)
     commands.acquire(asset_set)
