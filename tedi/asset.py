@@ -18,8 +18,9 @@ class Asset():
     def acquire(self, target_dir: Union[Path, str]) -> None:
         target_dir = Path(target_dir)
         target_dir.mkdir(parents=True, exist_ok=True)
-        logger.debug(f'Aquiring asset to {{ target_dir }}: {self}')
-        wget.download(
-            self.source,
-            str(target_dir / Path(self.filename))
-        )
+        target = target_dir / self.filename
+        if target.exists():
+            logger.debug(f'Using cached asset "{target}" for asset {self}. ')
+        else:
+            logger.debug(f'Aquiring asset to {{ target_dir }}: {self}')
+            wget.download(self.source, str(target))
