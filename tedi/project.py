@@ -4,9 +4,7 @@ from .paths import Paths
 from .builder import Builder
 from .factset import Factset
 from .assetset import Assetset
-from .asset import Asset
 from .process import fail
-from .jinja_renderer import JinjaRenderer
 
 logger = logging.getLogger('tedi.project')
 paths = Paths()
@@ -32,8 +30,6 @@ class Project():
         else:
             self.facts = Factset()
 
-        renderer = JinjaRenderer(self.facts)
-
         # A project has a collection of one or more image builders.
         self.builders = []
         for image_name, image_config in self.config['images'].items():
@@ -56,21 +52,9 @@ class Project():
             self.builders.append(builder)
 
         self.asset_sets = {}
-        # FIXME: Teach Assetset to instantiate itself from a config dict.
-        # FIXME: ie. Move this logic to the Assetset class.
         if 'asset_sets' in self.config:
-            for asset_set_name, asset_configs in self.config['asset_sets'].items():
-                assets = []
-                for config in asset_configs:
-                    if 'filename' not in config or 'source' not in config:
-                        logger.critical('Each asset in tedi.yml must declare "filename" and "source".')
-                        fail()
-
-                    # Expand any facts in the asset declaration.
-                    filename = renderer.render_string(config['filename'])
-                    source = renderer.render_string(config['source'])
-                    assets.append(Asset(filename, source))
-                self.asset_sets[asset_set_name] = Assetset(assets)
+            for asset_set_name, asset_set_config in self.config['asset_sets'].items():
+                self.asset_sets[asset_set_name] = Assetset.from_config(asset_set_config, self.facts)
 
     def __repr__(self):
         return f'Project("{self.path}")'
