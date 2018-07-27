@@ -8,7 +8,7 @@ from uuid import uuid4
 
 test_run_id = uuid4()
 source_dir = Path('tedi/tests/fixtures/projects/simple')
-target_dir = Path('target.test.tmp')
+target_dir = Path(f'.tedi/render/tedi-test-{test_run_id}')
 assert source_dir.exists()
 
 docker_client = docker.from_env()
@@ -29,7 +29,7 @@ def builder():
         docker_client.images.remove(test_image_name)
     except docker.errors.ImageNotFound:
         pass
-    return Builder(test_image_name, source_dir, target_dir, facts, image_aliases=test_image_aliases)
+    return Builder(test_image_name, facts, image_aliases=test_image_aliases, path=source_dir)
 
 
 def image_exists(name):
@@ -72,3 +72,18 @@ def test_tags_image_with_all_aliases(builder):
     builder.build()
     for alias in test_image_aliases:
         assert image_exists(alias)
+
+
+def test_from_config_updates_facts_from_the_config():
+    config = {
+        'facts': {
+            'freshness': 'intense'
+        }
+    }
+
+    builder = Builder.from_config(
+        name=test_image_name,
+        config=config,
+    )
+
+    assert builder.facts['freshness'] == 'intense'

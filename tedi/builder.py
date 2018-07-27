@@ -6,25 +6,56 @@ from .fileset import Fileset
 from .jinja_renderer import JinjaRenderer
 from .factset import Factset
 from .logging import getLogger
+from .paths import Paths
 
 logger = getLogger(__name__)
+paths = Paths()
 
 
 class Builder():
-    def __init__(self, image_name: str, source_dir: Path, target_dir: Path,
-                 facts: Factset, image_aliases: List[str]=None) -> None:
+    def __init__(self, image_name: str, facts: Factset=Factset(),
+                 image_aliases: List[str]=[], path=paths.project_path) -> None:
         self.image_name = f'{image_name}:{facts["image_tag"]}'
         if image_aliases:
             self.image_aliases = [f'{alias}:{facts["image_tag"]}' for alias in image_aliases]
         else:
             self.image_aliases = []
+        self.facts = facts
+        self.source_dir = path
 
-        self.source_dir = Path(source_dir)
-        self.target_dir = Path(target_dir)
+        self.target_dir = paths.render_path / image_name
         self.files = Fileset(self.source_dir)
-        self.renderer = JinjaRenderer(facts)
+        self.renderer = JinjaRenderer(self.facts)
         self.docker = docker.from_env()
         logger.debug(f'New Builder: {self}')
+
+    @classmethod
+    def from_config(cls, name, config, facts: Factset=Factset()):
+        """Create a Builder using a configuration block from tedi.yml
+
+        Like this:
+
+          nyancat:
+            aliases:
+              - rainbow_cat
+              - happy_cat
+            facts:
+              colorful: true
+
+        Facts defined in the configuration will be merged into the Factset
+        passed in as the "facts" parameter. This is useful for adding
+        image-specific facts on top of more general facts from the project.
+        """
+        logger.debug(f'Loaded builder config for {name}: {config}')
+
+        if 'facts' in config:
+            facts.update(config['facts'])
+
+        return cls(
+            image_name=name,
+            facts=facts,
+            image_aliases=config.get('aliases')
+        )
 
     def __repr__(self):
         return "Builder(source_dir='%s', target_dir='%s', facts=%s)" % \

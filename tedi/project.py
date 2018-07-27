@@ -11,9 +11,9 @@ paths = Paths()
 
 
 class Project():
-    def __init__(self, path):
+    def __init__(self, path=paths.project_path):
         self.path = path
-        config_path = self.path / 'tedi.yml'
+        config_path = path / 'tedi.yml'
 
         try:
             with open(config_path) as config_file:
@@ -33,28 +33,18 @@ class Project():
         # A project has a collection of one or more image builders.
         self.builders = []
         for image_name, image_config in self.config['images'].items():
-            if image_config is None:
-                image_config = {}
-            logger.debug(f'Loaded builder config for {image_name}: {image_config}')
+            self.builders.append(Builder.from_config(image_name, image_config, self.facts))
 
-            # Each image gets it own Factset that inherits from the project Factset.
-            image_facts = Factset(**self.facts.to_dict())
-            if 'facts' in image_config:
-                image_facts.update(image_config['facts'])
-
-            builder = Builder(
-                image_name=image_name,
-                source_dir=self.path,
-                target_dir=paths.render_path / image_name,
-                facts=image_facts,
-                image_aliases=image_config.get('aliases')
-            )
-            self.builders.append(builder)
-
+        # A project can have "asset sets" ie. files to be downloaded or copied
+        # into the build context.
         self.asset_sets = {}
         if 'asset_sets' in self.config:
-            for asset_set_name, asset_set_config in self.config['asset_sets'].items():
-                self.asset_sets[asset_set_name] = Assetset.from_config(asset_set_config, self.facts)
+            for name, assets in self.config['asset_sets'].items():
+                if not assets:
+                    logger.critical(f'Empty asset set "{name}" in tedi.yml')
+                    fail()
+                else:
+                    self.asset_sets[name] = Assetset.from_config(assets, self.facts)
 
     def __repr__(self):
         return f'Project("{self.path}")'

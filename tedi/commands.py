@@ -14,7 +14,7 @@ def die(message, exit_code=1):
 
 def render():
     """Render the projects to static files"""
-    Project(paths.project_path).render()
+    Project().render()
 
 
 def clean(clean_assets=False):
@@ -30,9 +30,9 @@ def clean(clean_assets=False):
 
 def build():
     """Build the images from the rendered files"""
-    Project(paths.project_path).build()
+    Project().build()
 
 
 def acquire(asset_set=None):
     """Acquire assets."""
-    Project(paths.project_path).acquire_assets(asset_set)
+    Project().acquire_assets(asset_set)

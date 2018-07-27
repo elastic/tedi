@@ -16,7 +16,7 @@ class Assetset():
         logger.debug(f'New Assetset: {self}')
 
     @classmethod
-    def from_config(cls, config: dict, facts: Factset=Factset()):
+    def from_config(cls, config: List[dict]=[], facts: Factset=Factset()):
         """Create an Assetset using a configuration block from tedi.yml
 
         Like this:
