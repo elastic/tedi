@@ -1,7 +1,10 @@
 import wget
+import sys
 from pathlib import Path
 from typing import Union
+from urllib.error import HTTPError
 from .logging import getLogger
+from .process import fail
 
 logger = getLogger(__name__)
 
@@ -23,4 +26,10 @@ class Asset():
             logger.debug(f'Using cached asset "{target}" for asset {self.source}. ')
         else:
             logger.info(f'Acquiring "{self.source}" to "{target}"')
-            wget.download(self.source, str(target))
+            try:
+                wget.download(self.source, str(target))
+                sys.stdout.write('\n')
+            except HTTPError as e:
+                logger.critical(f'Error downloading {self.source}')
+                logger.critical(e)
+                fail()
