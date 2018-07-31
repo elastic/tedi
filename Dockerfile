@@ -11,7 +11,7 @@ RUN apt-get update && \
 
 # Add Tedi
 WORKDIR /usr/src/app
-COPY requirements.txt setup.* ./
+COPY setup.* ./
 COPY tedi tedi
 RUN python setup.py install
 WORKDIR /mnt
