@@ -85,7 +85,7 @@ facts:
   elastic_version: 6.3.1
 
 # Asset sets declare files that need be acquired (downloaded) before building
-# the image. Declaring different asset sets is good way to build different
+# the image. Declaring different asset sets is a good way to build different
 # variants of your project without having to have a bunch of conditionals in
 # your templates.
 asset_sets:
@@ -99,8 +99,8 @@ asset_sets:
 
   # Alternative asset sets can be used with the "--asset-set" CLI flag.
   remote_snapshot:
-    - filename: elasticsearch-{{elastic_version}}.tar.gz
-      source: https://snapshots.elastic.co/downloads/elasticsearch/elasticsearch-{{elastic_version}}-SNAPSHOT.tar.gz
+    - filename: elasticsearch-{{ elastic_version }}.tar.gz
+      source: https://snapshots.elastic.co/downloads/elasticsearch/elasticsearch-{{ elastic_version }}-SNAPSHOT.tar.gz
 
 ```
 
