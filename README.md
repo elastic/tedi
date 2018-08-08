@@ -15,16 +15,9 @@ recommended approach.
 
 ### Running in Docker
 
-First, build an image of Tedi itself:
-
 ``` shell
-docker build -t tedi .
-```
-
-Then you can run it with Docker:
-
-``` shell
-docker run --rm -it -v /var/run/docker.sock:/var/run/docker.sock -v $MY_PROJECT:/mnt tedi build
+TEDI=docker.elastic.co/tedi/tedi:0.3
+docker run --rm -it -v /var/run/docker.sock:/var/run/docker.sock -v $PWD:/mnt $TEDI build
 ```
 
 * Because Tedi is itself a Docker client, we mount the Docker socket inside
