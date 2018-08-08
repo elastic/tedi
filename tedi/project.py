@@ -40,11 +40,12 @@ class Project():
         self.asset_sets = {}
         if 'asset_sets' in self.config:
             for name, assets in self.config['asset_sets'].items():
-                if not assets:
+                if assets:
+                    self.asset_sets[name] = Assetset.from_config(assets, self.facts)
+                else:
+                    # Die with a helpful message if an empty asset set was declared.
                     logger.critical(f'Empty asset set "{name}" in tedi.yml')
                     fail()
-                else:
-                    self.asset_sets[name] = Assetset.from_config(assets, self.facts)
 
     def __repr__(self):
         return f'Project("{self.path}")'
