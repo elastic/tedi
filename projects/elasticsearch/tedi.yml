@@ -1,8 +1,0 @@
-images:
-  elasticsearch-full:
-    facts:
-      image_flavor: full
-
-  elasticsearch-oss:
-    facts:
-      image_flavor: oss
