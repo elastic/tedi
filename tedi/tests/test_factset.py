@@ -1,5 +1,7 @@
+import os
 from ..factset import Factset
 from pytest import fixture, raises
+from unittest.mock import patch
 
 
 @fixture
@@ -75,3 +77,13 @@ def test_copy_returns_an_independant_factset(facts):
     new_facts['sky_color'] = 'grey'
     assert facts['sky_color'] == 'blue'
     assert new_facts['sky_color'] == 'grey'
+
+
+def test_it_can_glean_facts_from_special_environment_variables():
+    with patch.dict('os.environ', {'TEDI_FACT_bird': 'emu'}):
+        assert Factset()['bird'] == 'emu'
+
+
+def test_it_maps_standard_environment_variable_to_facts():
+    for var, value in os.environ.items():
+        assert Factset()[f'ENV_{var}'] == value

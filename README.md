@@ -143,6 +143,10 @@ tedi build --fact=elastic_version:7.0.0
 TEDI_FACT_image_tag=7.0.0-SNAPSHOT tedi build
 ```
 
+All standard environment variables are also mapped as facts, with a prefix of
+`ENV_`. So, for example, you can find the current working directory as the fact
+`ENV_PWD` and the current username as `ENV_USER`.
+
 ### Build troubleshooting
 If the Docker build fails, it can be handy to try running the build with pure
 Docker. That way, you don't have think through as many layers of

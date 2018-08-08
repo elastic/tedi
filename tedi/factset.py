@@ -32,6 +32,10 @@ class Factset(object):
             logger.debug('Default to image_tag: "latest"')
             self['image_tag'] = 'latest'
 
+        # Map the environment to facts.
+        for var, value in os.environ.items():
+            self[f'ENV_{var}'] = value
+
         logger.debug(f'New Factset: {self}')
 
     def __repr__(self):
