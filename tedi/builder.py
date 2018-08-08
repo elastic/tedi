@@ -1,4 +1,5 @@
 import docker
+import os
 import shutil
 from pathlib import Path
 from typing import List
@@ -82,6 +83,18 @@ class Builder():
             else:
                 logger.debug(f'Copying file: {source} -> {target}')
                 shutil.copy2(str(source), str(target))
+        self.link_assets()
+
+    def link_assets(self):
+        """Make assets available in the build context via hard links."""
+        if not paths.assets_path.exists():
+            return
+
+        for asset in os.listdir(paths.assets_path):
+            source = paths.assets_path / asset
+            target = self.target_dir / asset
+            logger.debug(f'Hard linking {source} -> {target}')
+            os.link(source, target)
 
     def build(self):
         """Run a "docker build" on the rendered image files."""

@@ -9,6 +9,7 @@ from uuid import uuid4
 test_run_id = uuid4()
 source_dir = Path('tedi/tests/fixtures/projects/simple')
 target_dir = Path(f'.tedi/render/tedi-test-{test_run_id}')
+assets_dir = Path(f'.tedi/assets')
 assert source_dir.exists()
 
 docker_client = docker.from_env()
@@ -51,6 +52,17 @@ def test_render_creates_the_target_dir(builder):
 def test_render_copies_normal_files(builder):
     builder.render()
     assert (target_dir / 'Dockerfile').exists()
+
+
+def test_render_links_files_from_the_assets_dir(builder):
+    assets_dir.mkdir(parents=True, exist_ok=True)
+    canary_id = str(uuid4())
+    asset = (assets_dir / canary_id)
+    with asset.open('w') as f:
+        f.write('asset_contents')
+
+    builder.render()
+    assert (target_dir / canary_id).exists()
 
 
 def test_render_renders_jinja2_templates(builder):
