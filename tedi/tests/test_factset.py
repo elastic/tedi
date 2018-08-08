@@ -68,3 +68,10 @@ def test_get_returns_none_on_missing_key(facts):
 
 def test_get_returns_default_on_missing_key_when_asked(facts):
     assert facts.get('first_prize', 'consolation_prize') == 'consolation_prize'
+
+
+def test_copy_returns_an_independant_factset(facts):
+    new_facts = facts.copy()
+    new_facts['sky_color'] = 'grey'
+    assert facts['sky_color'] == 'blue'
+    assert new_facts['sky_color'] == 'grey'

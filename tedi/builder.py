@@ -43,11 +43,15 @@ class Builder():
             facts:
               colorful: true
 
-        Facts defined in the configuration will be merged into the Factset
+        Facts defined in the configuration will be added to the Factset
         passed in as the "facts" parameter. This is useful for adding
         image-specific facts on top of more general facts from the project.
+
+        The underlying Factset is not mutated. An independant copy is made
+        for the Builder's use.
         """
         logger.debug(f'Loaded builder config for {name}: {config}')
+        facts = facts.copy()
 
         if 'facts' in config:
             facts.update(config['facts'])

@@ -99,3 +99,17 @@ def test_from_config_updates_facts_from_the_config():
     )
 
     assert builder.facts['freshness'] == 'intense'
+
+
+def test_builders_have_independant_factsets():
+    base_facts = Factset(color='black')
+
+    config_one = {'facts': {'color': 'red'}}
+    builder_one = Builder.from_config(name=test_image_name, config=config_one, facts=base_facts)
+
+    config_two = {'facts': {'color': 'blue'}}
+    builder_two = Builder.from_config(name=test_image_name, config=config_two, facts=base_facts)
+
+    assert base_facts['color'] == 'black'
+    assert builder_one.facts['color'] == 'red'
+    assert builder_two.facts['color'] == 'blue'

@@ -48,7 +48,7 @@ class Factset(object):
             logger.debug('Setting image_tag to include staging_build_num.')
             self['image_tag'] = self['elastic_version'] + '-' + self['staging_build_num']
         elif 'elastic_version' in self:
-            logger.debug('Setting image_tag to elastic_version.')
+            logger.debug(f'Setting image_tag to elastic_version: {self["elastic_version"]} .')
             self['image_tag'] = self['elastic_version']
         else:
             logger.debug('Setting image_tag to "latest"')
@@ -95,7 +95,13 @@ class Factset(object):
         return self.facts.get(key, default)
 
     def to_dict(self):
-        return self.facts
+        """Return a dictionary representation of this Factset."""
+        return self.copy().facts
 
     def update(self, *args, **kwargs):
+        """Update with new facts, like Dict.update()."""
         self.facts.update(*args, **kwargs)
+
+    def copy(self):
+        """Return a copy of this Factset (not a reference to it)."""
+        return Factset(**self.facts)
