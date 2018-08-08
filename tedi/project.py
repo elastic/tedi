@@ -11,7 +11,7 @@ paths = Paths()
 
 
 class Project():
-    def __init__(self, path=paths.project_path):
+    def __init__(self, path=paths.project_path, cli_facts=()):
         self.path = path
         config_path = path / 'tedi.yml'
 
@@ -29,6 +29,11 @@ class Project():
             self.facts = Factset(**self.config['facts'])
         else:
             self.facts = Factset()
+
+        if cli_facts:
+            for fact_string in cli_facts:
+                fact, value = fact_string.split(':', 1)
+                self.facts[fact] = value
 
         # A project has a collection of one or more image builders.
         self.builders = []
@@ -55,6 +60,10 @@ class Project():
             builder.render()
 
     def build(self):
+        """Build all Builders.
+
+        Optionally specify an explicit tag like "7.0.0" or "latest".
+        """
         for builder in self.builders:
             builder.build()
 

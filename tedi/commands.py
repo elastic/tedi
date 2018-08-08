@@ -12,9 +12,9 @@ def die(message, exit_code=1):
     raise SystemExit(exit_code)
 
 
-def render():
+def render(cli_facts):
     """Render the projects to static files"""
-    Project().render()
+    Project(cli_facts=cli_facts).render()
 
 
 def clean(clean_assets=False):
@@ -28,11 +28,11 @@ def clean(clean_assets=False):
         shutil.rmtree(str(paths.assets_path))
 
 
-def build():
+def build(cli_facts=()):
     """Build the images from the rendered files"""
-    Project().build()
+    Project(cli_facts=cli_facts).build()
 
 
-def acquire(asset_set=None):
+def acquire(asset_set=None, cli_facts=()):
     """Acquire assets."""
-    Project().acquire_assets(asset_set)
+    Project(cli_facts=cli_facts).acquire_assets(asset_set)

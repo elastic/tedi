@@ -16,11 +16,8 @@ paths = Paths()
 class Builder():
     def __init__(self, image_name: str, facts: Factset=Factset(),
                  image_aliases: List[str]=[], path=paths.project_path) -> None:
-        self.image_name = f'{image_name}:{facts["image_tag"]}'
-        if image_aliases:
-            self.image_aliases = [f'{alias}:{facts["image_tag"]}' for alias in image_aliases]
-        else:
-            self.image_aliases = []
+        self.image_name = image_name
+        self.image_aliases = image_aliases
         self.facts = facts
         self.source_dir = path
 
@@ -59,7 +56,7 @@ class Builder():
         return cls(
             image_name=name,
             facts=facts,
-            image_aliases=config.get('aliases')
+            image_aliases=config.get('aliases', [])
         )
 
     def __repr__(self):
@@ -107,10 +104,18 @@ class Builder():
             logger.warn(f'No Dockerfile found at {dockerfile}. Cannot build {self.image_name}.')
             return
 
-        logger.info(f'Building {self.image_name}...')
+        tag = self.facts["image_tag"]
+        fqin = f'{self.image_name}:{tag}'
+
+        logger.info(f'Building {fqin}...')
+
         image, build_log = self.docker.images.build(
             path=str(self.target_dir),
-            tag=f'{self.image_name}'
+            # Frustrating, Docker change their minds about which part is the "tag".
+            # We say that the part after the colon is the tag, like ":latest".
+            # Docker does too, most of the time, but for this function, the "tag"
+            # parameter takes a fully qualified image name.
+            tag=fqin
         )
 
         # The output you'd normally get on the terminal from `docker build` can
@@ -124,5 +129,5 @@ class Builder():
                     logger.debug(message)
 
         for alias in self.image_aliases:
-            logger.info(f'Tagging {self.image_name} as {alias}')
-            image.tag(alias)
+            logger.info(f'Aliasing {self.image_name}:{tag} as {alias}:{tag}')
+            image.tag(f'{alias}:{tag}')

@@ -21,37 +21,15 @@ class Factset(object):
     def __init__(self, **keyword_facts):
         self.facts = keyword_facts
 
-        # If these environment variables are set, they will forcibly
-        # override the corresponding facts.
-        #
-        # Having explicit support for these is useful while we migrate from the
-        # old build system. It allows Tedi to support established conventions
-        # like setting the "STAGING_BUILD_NUM" environment variable to build a
-        # release candidate, for example.
-        #
-        # However, we should aim to remove this support, since it's opposed to
-        # the goal of having Tedi be a generic build system for Docker
-        # images. (Ideally, Tedi wouldn't have any knowledge of "Elastic
-        # stuff").
-        environment_facts = [
-            'ARTIFACTS_DIR',
-            'ELASTIC_VERSION',
-            'STAGING_BUILD_NUM',
-        ]
-        for fact in environment_facts:
-            if fact in os.environ:
-                self[fact.lower()] = os.environ[fact]
+        # Look for facts passed in via the environment.
+        for key, value in os.environ.items():
+            if key.startswith('TEDI_FACT_'):
+                fact = key.split('_', 2)[-1]
+                self[fact] = value
 
-        # Synthesize a fact to represent the Docker tag, like '6.3.0' or '6.4.0-SNAPSHOT'.
-        # Again, it would be better if Tedi didn't have to know about this.
-        if 'staging_build_num' in self and 'elastic_version' in self:
-            logger.debug('Setting image_tag to include staging_build_num.')
-            self['image_tag'] = self['elastic_version'] + '-' + self['staging_build_num']
-        elif 'elastic_version' in self:
-            logger.debug(f'Setting image_tag to elastic_version: {self["elastic_version"]} .')
-            self['image_tag'] = self['elastic_version']
-        else:
-            logger.debug('Setting image_tag to "latest"')
+        # Provide some default facts.
+        if 'image_tag' not in self:
+            logger.debug('Default to image_tag: "latest"')
             self['image_tag'] = 'latest'
 
         logger.debug(f'New Factset: {self}')

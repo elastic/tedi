@@ -33,12 +33,12 @@ def builder():
     return Builder(test_image_name, facts, image_aliases=test_image_aliases, path=source_dir)
 
 
-def image_exists(name):
+def image_exists(name, tag='latest'):
     image_found = False
     for image in docker_client.images.list():
-        for tag in image.tags:
-            print(tag)
-        if f'{name}:latest' in image.tags:
+        for fqin in image.tags:
+            print(fqin)
+        if f'{name}:{tag}' in image.tags:
             image_found = True
     return image_found
 
@@ -79,7 +79,7 @@ def test_build_creates_a_docker_image(builder):
     assert image_exists(test_image_name)
 
 
-def test_tags_image_with_all_aliases(builder):
+def test_names_image_with_all_aliases(builder):
     builder.render()
     builder.build()
     for alias in test_image_aliases:

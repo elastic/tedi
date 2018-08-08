@@ -16,8 +16,14 @@ recommended approach.
 ### Running in Docker
 
 ``` shell
-TEDI=docker.elastic.co/tedi/tedi:0.4
-docker run --rm -it -v /var/run/docker.sock:/var/run/docker.sock -v $PWD:/mnt $TEDI build
+# Pull the image.
+docker pull docker.elastic.co/tedi/tedi:0.5
+
+# Give it a nice, short name for local use.
+docker tag docker.elastic.co/tedi/tedi:0.5 tedi
+
+# Run a build (from your project directory).
+docker run --rm -it -v /var/run/docker.sock:/var/run/docker.sock -v $PWD:/mnt tedi build
 ```
 
 * Because Tedi is itself a Docker client, we mount the Docker socket inside
@@ -73,9 +79,11 @@ images:
 
 # Global facts apply to all images.
 facts:
-  # Some facts have explicit support within Tedi. Setting the "elastic_version"
-  # fact will arrange for image tags to be versioned correctly.
   elastic_version: 6.3.1
+
+  # The "image_tag" fact has explicit support inside Tedi. Specify it to have
+  # your images tagged something other than "latest".
+  image_tag: 6.3.1-SNAPSHOT
 
 # Asset sets declare files that need be acquired (downloaded) before building
 # the image. Declaring different asset sets is a good way to build different
@@ -116,7 +124,24 @@ Any files with a `.j2` extension will be rendered through the Jinja2 template
 engine before being added to the Docker build context. Generally, you will want
 to create (at least) a Dockerfile template at `tedi/Dockerfile.j2`.
 
-The template engine will expand variables from the _facts_ defined in `tedi.yml`.
+The template engine will expand variables from the _facts_ defined in `tedi.yml`
+and elsewhere (see below).
+
+### Facts
+Facts can be defined in `tedi.yml`, either at the project (top) level, or the image
+level.
+
+They can also be set on the command line with this comma delimited syntax:
+
+```
+tedi build --fact=elastic_version:7.0.0
+```
+
+...and via environment variables:
+
+```
+TEDI_FACT_image_tag=7.0.0-SNAPSHOT tedi build
+```
 
 ### Build troubleshooting
 If the Docker build fails, it can be handy to try running the build with pure
