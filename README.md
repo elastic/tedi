@@ -118,6 +118,18 @@ to create (at least) a Dockerfile template at `tedi/Dockerfile.j2`.
 
 The template engine will expand variables from the _facts_ defined in `tedi.yml`.
 
+### Build troubleshooting
+If the Docker build fails, it can be handy to try running the build with pure
+Docker. That way, you don't have think through as many layers of
+abstraction. One of the design principles of Tedi is that the rendered build
+context sent to Docker is very much "normal" and can be fed straight to
+Docker. Like this:
+
+```
+tedi render
+docker build .tedi/render/elasticsearch-full
+```
+
 ## Development
 
 Tedi is written in Python 3.6 with tests in pytest. Some type annotations can be
