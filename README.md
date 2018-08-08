@@ -16,7 +16,7 @@ recommended approach.
 ### Running in Docker
 
 ``` shell
-TEDI=docker.elastic.co/tedi/tedi:0.3
+TEDI=docker.elastic.co/tedi/tedi:0.4
 docker run --rm -it -v /var/run/docker.sock:/var/run/docker.sock -v $PWD:/mnt $TEDI build
 ```
 
