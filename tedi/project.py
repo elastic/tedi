@@ -2,7 +2,7 @@ import logging
 import yaml
 from . import cli
 from .paths import Paths
-from .builder import Builder
+from .image import Image
 from .factset import Factset
 from .assetset import Assetset
 from .process import fail
@@ -34,10 +34,10 @@ class Project():
         # Set any facts that were passed as CLI flags.
         self.facts.update(cli.get_flag('fact', {}))
 
-        # A project has a collection of one or more image builders.
-        self.builders = []
+        # A project has a collection of one or more images.
+        self.images = []
         for image_name, image_config in self.config['images'].items():
-            self.builders.append(Builder.from_config(image_name, image_config, self.facts))
+            self.images.append(Image.from_config(image_name, image_config, self.facts))
 
         # A project can have "asset sets" ie. files to be downloaded or copied
         # into the build context.
@@ -55,13 +55,14 @@ class Project():
         return f'Project("{self.path}")'
 
     def render(self):
-        for builder in self.builders:
-            builder.render()
+        """Render the build contexts."""
+        for image in self.images:
+            image.render()
 
     def build(self):
-        """Build all Builders."""
-        for builder in self.builders:
-            builder.build()
+        """Build all Images."""
+        for image in self.images:
+            image.build()
 
     def acquire_assets(self):
         asset_set = cli.get_flag('asset-set')

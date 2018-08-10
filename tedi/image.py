@@ -13,7 +13,7 @@ logger = getLogger(__name__)
 paths = Paths()
 
 
-class Builder():
+class Image():
     def __init__(self, image_name: str, facts: Factset=Factset(),
                  image_aliases: List[str]=[], path=paths.project_path) -> None:
         self.image_name = image_name
@@ -25,11 +25,11 @@ class Builder():
         self.files = Fileset(self.source_dir)
         self.renderer = JinjaRenderer(self.facts)
         self.docker = docker.from_env()
-        logger.debug(f'New Builder: {self}')
+        logger.debug(f'New Image: {self}')
 
     @classmethod
     def from_config(cls, name, config, facts: Factset=Factset()):
-        """Create a Builder using a configuration block from tedi.yml
+        """Create an Image using a configuration block from tedi.yml
 
         Like this:
 
@@ -45,9 +45,9 @@ class Builder():
         image-specific facts on top of more general facts from the project.
 
         The underlying Factset is not mutated. An independant copy is made
-        for the Builder's use.
+        for the Image's use.
         """
-        logger.debug(f'Loaded builder config for {name}: {config}')
+        logger.debug(f'Loaded image config for {name}: {config}')
         facts = facts.copy()
 
         if 'facts' in config:
@@ -60,7 +60,7 @@ class Builder():
         )
 
     def __repr__(self):
-        return "Builder(source_dir='%s', target_dir='%s', facts=%s)" % \
+        return "Image(source_dir='%s', target_dir='%s', facts=%s)" % \
             (self.files.top_dir, self.target_dir, self.renderer.facts)
 
     def render(self):

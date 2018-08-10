@@ -19,20 +19,20 @@ def test_path_is_a_path(project):
     assert isinstance(project.path, Path)
 
 
-def test_render_calls_render_on_each_builder(project):
-    for builder in project.builders:
-        builder.render = Mock()
+def test_render_calls_render_on_each_image(project):
+    for image in project.images:
+        image.render = Mock()
     project.render()
-    for builder in project.builders:
-        assert builder.render.called
+    for image in project.images:
+        assert image.render.called
 
 
-def test_build_calls_build_on_each_builder(project):
-    for builder in project.builders:
-        builder.build = Mock()
+def test_build_calls_build_on_each_image(project):
+    for image in project.images:
+        image.build = Mock()
     project.build()
-    for builder in project.builders:
-        assert builder.build.called
+    for image in project.images:
+        assert image.build.called
 
 
 def test_projects_have_a_dictionary_of_asset_sets(project):
