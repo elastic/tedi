@@ -33,6 +33,7 @@ class Factset(object):
             self['image_tag'] = 'latest'
 
         # Map the environment to facts.
+        # FIXME: Make this something you can switch off or on.
         for var, value in os.environ.items():
             self[f'ENV_{var}'] = value
 
