@@ -8,7 +8,7 @@ setup(name='tedi',
       author='Elastic',
       author_email='infra@elastic.co',
       packages=['tedi'],
-      python_requires='>=3.6<=4',
+      python_requires='>=3.6<4',
       install_requires=[
           'click==6.7',
           'docker==3.4.1',
