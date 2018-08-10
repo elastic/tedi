@@ -3,7 +3,7 @@ import shutil
 from click.testing import CliRunner
 from contextlib import contextmanager
 import pyconfig
-from ..cli import cli, store_fact_flags
+from ..cli import cli, get_flag, set_flag, set_fact_flags
 from ..paths import Paths
 from .paths import fixtures_path
 
@@ -98,13 +98,27 @@ def test_acquire_command_acquires_assets_specified_by_asset_set_flag():
         assert command_acquires_asset(runner, 'acquire --asset-set=special', 'special.tar.gz')
 
 
-def test_store_fact_flags_assigns_facts_in_config():
+def test_set_flag_assigns_facts_in_config():
+    set_flag('explode', False)
+    assert pyconfig.get('cli.flags.explode') is False
+
+
+def test_get_flag_return_cli_flags():
+    pyconfig.set('cli.flags.fly', True)
+    assert get_flag('fly') is True
+
+
+def test_get_flag_can_return_a_default():
+    assert get_flag('no-bananas', 'have-a-peanut') == 'have-a-peanut'
+
+
+def test_set_fact_flags_assigns_facts_in_config():
     args = (
         'key:minor',
         'tempo:adagio',
         'time_signature:3:4'  # <- Extra colon. Will it work?
     )
-    store_fact_flags(args)
-    assert pyconfig.get('cli.flags.fact')['key'] == 'minor'
-    assert pyconfig.get('cli.flags.fact')['tempo'] == 'adagio'
-    assert pyconfig.get('cli.flags.fact')['time_signature'] == '3:4'
+    set_fact_flags(args)
+    assert get_flag('fact')['key'] == 'minor'
+    assert get_flag('fact')['tempo'] == 'adagio'
+    assert get_flag('fact')['time_signature'] == '3:4'

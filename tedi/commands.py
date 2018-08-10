@@ -8,17 +8,17 @@ logger = getLogger(__name__)
 paths = Paths()
 
 
-def die(message, exit_code=1):
+def die(message, exit_code=1) -> None:
     logger.error(message)
     raise SystemExit(exit_code)
 
 
-def render():
+def render() -> None:
     """Render the projects to static files"""
     Project().render()
 
 
-def clean():
+def clean() -> None:
     """Remove all rendered files and optionally assets"""
     if paths.render_path.exists():
         logger.debug('Recursively deleting render path: %s' % str(paths.render_path))
@@ -29,11 +29,11 @@ def clean():
         shutil.rmtree(str(paths.assets_path))
 
 
-def build():
+def build() -> None:
     """Build the images from the rendered files"""
     Project().build()
 
 
-def acquire():
+def acquire() -> None:
     """Acquire assets."""
     Project().acquire_assets()

@@ -1,6 +1,6 @@
 import logging
-import pyconfig
 import yaml
+from . import cli
 from .paths import Paths
 from .builder import Builder
 from .factset import Factset
@@ -32,7 +32,7 @@ class Project():
             self.facts = Factset()
 
         # Set any facts that were passed as CLI flags.
-        self.facts.update(pyconfig.get('cli.flags.fact', {}))
+        self.facts.update(cli.get_flag('fact', {}))
 
         # A project has a collection of one or more image builders.
         self.builders = []
@@ -64,7 +64,7 @@ class Project():
             builder.build()
 
     def acquire_assets(self):
-        asset_set = pyconfig.get('cli.flags.asset-set')
+        asset_set = cli.get_flag('asset-set')
         if not self.asset_sets:
             logger.debug('No asset sets for this project. Will not acquire any files.')
             return

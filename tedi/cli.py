@@ -1,6 +1,6 @@
 import click
 import pyconfig
-from typing import Tuple
+from typing import Any, Tuple
 from . import commands
 from .logging import getLogger
 from .process import fail
@@ -18,7 +18,7 @@ def cli():
 def render(fact: Tuple[str]):
     """Render build contexts (.tedi/*)."""
     logger.debug('render subcommand called from cli')
-    store_fact_flags(fact)
+    set_fact_flags(fact)
     commands.clean()
     commands.render()
 
@@ -28,7 +28,7 @@ def render(fact: Tuple[str]):
 def clean(clean_assets: bool):
     """Remove rendered files and downloaded assets."""
     logger.debug('clean subcommand called from cli')
-    pyconfig.set('cli.flags.clean-assets', clean_assets)
+    set_flag('clean-assets', clean_assets)
     commands.clean()
 
 
@@ -39,9 +39,9 @@ def clean(clean_assets: bool):
 def build(clean_assets: bool, asset_set: str, fact: Tuple[str]):
     """Build images."""
     logger.debug('build subcommand called from cli')
-    pyconfig.set('cli.flags.asset-set', asset_set)
-    pyconfig.set('cli.flags.clean-assets', clean_assets)
-    store_fact_flags(fact)
+    set_flag('asset-set', asset_set)
+    set_flag('clean-assets', clean_assets)
+    set_fact_flags(fact)
     # FIXME: Should we auto-clean assets if the assetset changes?
     commands.clean()
     commands.acquire()
@@ -56,7 +56,7 @@ def acquire(asset_set: str, fact: Tuple[str]):
     """Acquire assets."""
     logger.debug('acquire subcommand called from cli')
     pyconfig.set('cli.flags.asset-set', asset_set)
-    store_fact_flags(fact)
+    set_fact_flags(fact)
 
     # Since the user explicitly called "acquire", make sure they get fresh assets
     # by cleaning the assets dir first.
@@ -66,7 +66,17 @@ def acquire(asset_set: str, fact: Tuple[str]):
     commands.acquire()
 
 
-def store_fact_flags(flag_args: Tuple[str]) -> None:
+def set_flag(flag: str, value: Any) -> None:
+    """Store a CLI flag in the config as "cli.flags.FLAG"."""
+    pyconfig.set(f'cli.flags.{flag}', value)
+
+
+def get_flag(flag: str, default: Any=None) -> Any:
+    """Get a CLI flag from the config."""
+    return pyconfig.get(f'cli.flags.{flag}', default)
+
+
+def set_fact_flags(flag_args: Tuple[str]) -> None:
     """Take "--fact" flags from the CLI and store them in the config as a dict."""
     facts = {}
 
@@ -79,4 +89,4 @@ def store_fact_flags(flag_args: Tuple[str]) -> None:
         logger.debug(f'Setting fact from cli: "{fact}" == "{value}"')
         facts[fact] = value
 
-    pyconfig.set('cli.flags.fact', facts)
+    set_flag('fact', facts)
