@@ -15,7 +15,7 @@ def cli():
 
 @cli.command()
 @click.option('--fact', multiple=True, help='Set a fact, like --fact=color:blue.')
-def render(fact):
+def render(fact: Tuple[str]):
     """Render build contexts (.tedi/*)."""
     logger.debug('render subcommand called from cli')
     store_fact_flags(fact)
@@ -36,7 +36,7 @@ def clean(clean_assets: bool):
 @click.option('--clean-assets', is_flag=True, help='Reaquire assets.')
 @click.option('--asset-set', default='default', help='Specify the asset set to build with.')
 @click.option('--fact', multiple=True, help='Set a fact, like --fact=color:blue.')
-def build(clean_assets: bool, asset_set: str, fact):
+def build(clean_assets: bool, asset_set: str, fact: Tuple[str]):
     """Build images."""
     logger.debug('build subcommand called from cli')
     pyconfig.set('cli.flags.asset-set', asset_set)
@@ -52,7 +52,7 @@ def build(clean_assets: bool, asset_set: str, fact):
 @cli.command()
 @click.option('--asset-set', default='default', help='Specify the asset set to acquire.')
 @click.option('--fact', multiple=True, help='Set a fact, like --fact=color:blue.')
-def acquire(asset_set: str, fact):
+def acquire(asset_set: str, fact: Tuple[str]):
     """Acquire assets."""
     logger.debug('acquire subcommand called from cli')
     pyconfig.set('cli.flags.asset-set', asset_set)
