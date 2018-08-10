@@ -14,7 +14,7 @@ setup(name='tedi',
           'docker==3.4.1',
           'jinja2==2.10',
           'pyconfig>=3,<4'
-          'pyyaml==3.12',
+          'pyyaml==3.13',
           'wget==3.2',
       ],
       tests_require=[
@@ -24,6 +24,7 @@ setup(name='tedi',
           'pytest-cov==2.5.1',
           'pytest-flake8==0.9.1',
           'pytest-mypy==0.3.0',
+          'pyyaml==3.13',
       ],
       setup_requires=['pytest-runner==4.2.0'],
       entry_points='''
