@@ -2,7 +2,8 @@ from uuid import uuid4
 import shutil
 from click.testing import CliRunner
 from contextlib import contextmanager
-from ..cli import cli
+import pyconfig
+from ..cli import cli, store_fact_flags
 from ..paths import Paths
 from .paths import fixtures_path
 
@@ -26,9 +27,8 @@ def project_runner(fixture='simple'):
         yield runner
 
 
-def assert_in_file(runner: CliRunner, test_file, string):
-    runner.run('render')
-    assert string in (paths.render_path / test_file).open().read()
+def in_file(string, test_file='simple-vanilla/README.md') -> bool:
+    return (string in (paths.render_path / test_file).open().read())
 
 
 def assert_command_cleans_path(runner, path, command):
@@ -61,6 +61,18 @@ def test_render_command_cleans_render_path():
         assert_command_cleans_path(runner, paths.render_path, 'render')
 
 
+def test_render_command_accepts_facts_as_cli_flags():
+    with project_runner() as runner:
+        runner.run('render --fact=cow_color:cherry')
+        assert in_file('How now, cherry cow?')
+
+
+def test_build_command_accepts_facts_as_cli_flags():
+    with project_runner() as runner:
+        runner.run('build --fact=cow_color:cinnabar')
+        assert in_file('How now, cinnabar cow?')
+
+
 def test_clean_command_removes_assets_with_clean_assets_flag():
     with project_runner() as runner:
         assert_command_cleans_path(runner, paths.assets_path, 'clean --clean-assets')
@@ -84,3 +96,15 @@ def test_acquire_command_does_not_acquire_non_default_assets():
 def test_acquire_command_acquires_assets_specified_by_asset_set_flag():
     with project_runner() as runner:
         assert command_acquires_asset(runner, 'acquire --asset-set=special', 'special.tar.gz')
+
+
+def test_store_fact_flags_assigns_facts_in_config():
+    args = (
+        'key:minor',
+        'tempo:adagio',
+        'time_signature:3:4'  # <- Extra colon. Will it work?
+    )
+    store_fact_flags(args)
+    assert pyconfig.get('cli.flags.fact')['key'] == 'minor'
+    assert pyconfig.get('cli.flags.fact')['tempo'] == 'adagio'
+    assert pyconfig.get('cli.flags.fact')['time_signature'] == '3:4'

@@ -1,5 +1,6 @@
-import yaml
 import logging
+import pyconfig
+import yaml
 from .paths import Paths
 from .builder import Builder
 from .factset import Factset
@@ -11,7 +12,7 @@ paths = Paths()
 
 
 class Project():
-    def __init__(self, path=paths.project_path, cli_facts=()):
+    def __init__(self, path=paths.project_path):
         self.path = path
         config_path = path / 'tedi.yml'
 
@@ -30,10 +31,8 @@ class Project():
         else:
             self.facts = Factset()
 
-        if cli_facts:
-            for fact_string in cli_facts:
-                fact, value = fact_string.split(':', 1)
-                self.facts[fact] = value
+        # Set any facts that were passed as CLI flags.
+        self.facts.update(pyconfig.get('cli.flags.fact', {}))
 
         # A project has a collection of one or more image builders.
         self.builders = []
@@ -60,20 +59,18 @@ class Project():
             builder.render()
 
     def build(self):
-        """Build all Builders.
-
-        Optionally specify an explicit tag like "7.0.0" or "latest".
-        """
+        """Build all Builders."""
         for builder in self.builders:
             builder.build()
 
-    def acquire_assets(self, asset_set_name: str):
+    def acquire_assets(self):
+        asset_set = pyconfig.get('cli.flags.asset-set')
         if not self.asset_sets:
             logger.debug('No asset sets for this project. Will not acquire any files.')
             return
 
-        if asset_set_name not in self.asset_sets:
-            logger.critical(f'Asset set "{asset_set_name}" not defined in tedi.yml.')
+        if asset_set not in self.asset_sets:
+            logger.critical(f'Asset set "{asset_set}" not defined in tedi.yml.')
             fail()
 
-        self.asset_sets[asset_set_name].acquire()
+        self.asset_sets[asset_set].acquire()

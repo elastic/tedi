@@ -47,21 +47,6 @@ def test_projects_expand_facts_in_assets(project):
     assert asset.source == 'file:///source-from-fact'
 
 
-def test_projects_can_accept_facts_from_cli_arguments():
-    # Project take list of string to override facts from the command line.
-    # The command line flags look like "--fact=key:value".
-    cli_facts = [
-        'fruit:gauva',
-        'vegetable:potato'
-    ]
-    project = Project(
-        path=Path(f'tedi/tests/fixtures/projects/simple'),
-        cli_facts=cli_facts)
-
-    assert project.facts['fruit'] == 'gauva'
-    assert project.facts['vegetable'] == 'potato'
-
-
 def test_projects_have_a_factset(project):
     assert isinstance(project.facts, Factset)
 

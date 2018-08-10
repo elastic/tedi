@@ -13,6 +13,7 @@ setup(name='tedi',
           'click==6.7',
           'docker==3.4.1',
           'jinja2==2.10',
+          'pyconfig>=3,<4'
           'pyyaml==3.12',
           'wget==3.2',
       ],

@@ -1,3 +1,4 @@
+import pyconfig
 import shutil
 from .paths import Paths
 from .project import Project
@@ -12,27 +13,27 @@ def die(message, exit_code=1):
     raise SystemExit(exit_code)
 
 
-def render(cli_facts):
+def render():
     """Render the projects to static files"""
-    Project(cli_facts=cli_facts).render()
+    Project().render()
 
 
-def clean(clean_assets=False):
+def clean():
     """Remove all rendered files and optionally assets"""
     if paths.render_path.exists():
         logger.debug('Recursively deleting render path: %s' % str(paths.render_path))
         shutil.rmtree(str(paths.render_path))
 
-    if clean_assets and paths.assets_path.exists():
+    if pyconfig.get('cli.flags.clean-assets') and paths.assets_path.exists():
         logger.debug('Recursively deleting asset path: %s' % str(paths.assets_path))
         shutil.rmtree(str(paths.assets_path))
 
 
-def build(cli_facts=()):
+def build():
     """Build the images from the rendered files"""
-    Project(cli_facts=cli_facts).build()
+    Project().build()
 
 
-def acquire(asset_set=None, cli_facts=()):
+def acquire():
     """Acquire assets."""
-    Project(cli_facts=cli_facts).acquire_assets(asset_set)
+    Project().acquire_assets()
