@@ -11,20 +11,25 @@ paths = Paths()
 
 
 class Assetset():
+    """A collection of Assets (external files) for use in a build."""
     def __init__(self, assets: List[Asset]) -> None:
         self.assets = assets
         logger.debug(f'New Assetset: {self}')
 
     @classmethod
     def from_config(cls, config: List[dict]=[], facts: Factset=Factset()):
-        """Create an Assetset using a configuration block from tedi.yml
+        """Create an Assetset using a configuration block in tedi.yml
 
-        Like this:
+        The YAML form looks like this:
 
             - filename: bigball.tar.gz
               source: http://example.org/downloads/bigball-v1.tar.gz
-            - filename: pie
-              source: file:///usr/local/pie
+            - filename: mince_pie
+              source: file:///usr/local/pies/{{ pie_type_fact }}
+
+        This method accepts the above data structure as a Python list. It also
+        arranges for template tokens in the configuration to be expanded, using
+        the facts available in the Factset.
         """
         assets = []
         renderer = JinjaRenderer(facts)
