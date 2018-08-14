@@ -1,2 +1,6 @@
-# Defer to setup.py with a magic dot:
-.
+click==6.7
+docker==3.4.1
+jinja2==2.10
+pyconfig>=3,<4
+pyyaml==3.13
+wget==3.2
