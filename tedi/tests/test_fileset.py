@@ -30,11 +30,9 @@ def test_fileset_files_are_relative_to_top_dir(fileset):
         assert (top / f.relative_to(top)).exists()
 
 
-def test_relative_yields_files_relative_to_top_dir(fileset):
-    assert Path('Dockerfile') in fileset.relative()
-    assert Path('files/file01') in fileset.relative()
-    assert Path('deep/directory/structure/deepfile01') in fileset.relative()
-
-
 def test_fileset_contains_subdirectories(fileset):
-    assert Path('deep/directory/structure') in fileset.relative()
+    for f in fileset.files:
+        print(f.parts[-3:])
+        if f.parts[-3:] == ('deep', 'directory', 'structure'):
+            return
+    raise AssertionError

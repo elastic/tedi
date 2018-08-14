@@ -8,11 +8,6 @@ logger = getLogger(__name__)
 paths = Paths()
 
 
-def die(message, exit_code=1) -> None:
-    logger.error(message)
-    raise SystemExit(exit_code)
-
-
 def render() -> None:
     """Render the projects to static files"""
     Project().render()

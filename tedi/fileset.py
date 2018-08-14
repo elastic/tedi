@@ -28,7 +28,3 @@ class Fileset:
 
     def __contains__(self, path):
         return Path(path) in self.files
-
-    def relative(self):
-        for f in self.files:
-            yield f.relative_to(self.top_dir)
