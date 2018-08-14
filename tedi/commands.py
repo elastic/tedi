@@ -1,5 +1,5 @@
-import pyconfig
 import shutil
+from . import cli
 from .paths import Paths
 from .project import Project
 from .logging import getLogger
@@ -24,7 +24,7 @@ def clean() -> None:
         logger.debug('Recursively deleting render path: %s' % str(paths.render_path))
         shutil.rmtree(str(paths.render_path))
 
-    if pyconfig.get('cli.flags.clean-assets') and paths.assets_path.exists():
+    if cli.get_flag('clean-assets') and paths.assets_path.exists():
         logger.debug('Recursively deleting asset path: %s' % str(paths.assets_path))
         shutil.rmtree(str(paths.assets_path))
 
