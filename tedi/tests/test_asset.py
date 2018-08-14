@@ -1,18 +1,8 @@
-from pytest import fixture
-from ..asset import Asset
-from ..paths import Paths
-
-paths = Paths()
+from unittest.mock import patch
+from .. import process
 
 
-@fixture
-def asset() -> Asset:
-    return Asset(
-        filename='local-asset-fixture.tar.gz',
-        source='file:///etc/issue',
-    )
-
-
-def test_aquire_creates_the_local_file(asset):
-    asset.acquire(paths.assets_path)
-    assert (paths.assets_path / 'local-asset-fixture.tar.gz').exists()
+def test_fail_exits():
+    with patch('sys.exit') as exit:
+        process.fail()
+        assert exit.called
