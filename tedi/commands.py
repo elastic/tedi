@@ -9,12 +9,12 @@ paths = Paths()
 
 
 def render() -> None:
-    """Render the projects to static files"""
+    """Render the projects to static files."""
     Project().render()
 
 
 def clean() -> None:
-    """Remove all rendered files and optionally assets"""
+    """Remove all rendered files and, optionally, assets."""
     if paths.render_path.exists():
         logger.debug('Recursively deleting render path: %s' % str(paths.render_path))
         shutil.rmtree(str(paths.render_path))
@@ -25,7 +25,7 @@ def clean() -> None:
 
 
 def build() -> None:
-    """Build the images from the rendered files"""
+    """Build the images from the rendered files."""
     Project().build()
 
 

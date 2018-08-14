@@ -19,7 +19,7 @@ class Fileset:
         return "Fileset('%s')" % self.top_dir
 
     def __iter__(self):
-        """Iterate over all files in the fileset, relative to top_dir"""
+        """Iterate over all files in the fileset, relative to top_dir."""
         for f in self.files:
             yield f
 

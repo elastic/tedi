@@ -7,7 +7,7 @@ paths = Paths()
 
 
 class Factset(object):
-    """A dictionary like object for storing facts
+    """A dictionary like object for storing facts.
 
     A Factset is simply a mapping of strings to strings, as used for variable
     expansions in Jinja2 templates.
