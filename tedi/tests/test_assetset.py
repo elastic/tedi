@@ -16,7 +16,10 @@ def assetset() -> Assetset:
         source=f'file://{fixtures_dir_path}/text-asset'
     )
 
-    rmtree(str(paths.assets_path))
+    try:
+        rmtree(str(paths.assets_path))
+    except FileNotFoundError:
+        pass
     return Assetset([asset])
 
 
