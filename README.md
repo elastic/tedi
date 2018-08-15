@@ -131,7 +131,7 @@ and elsewhere (see below).
 Facts can be defined in `tedi.yml`, either at the project (top) level, or the image
 level.
 
-They can also be set on the command line with this comma delimited syntax:
+They can also be set on the command line with this colon delimited syntax:
 
 ```
 tedi build --fact=elastic_version:7.0.0
