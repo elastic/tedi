@@ -82,7 +82,7 @@ then made available to the build context as local files.
 
 #### Build context
 All the files that are provided to Docker when building an image. If you were to
-run `docker build /tmp/soup`, the the build context would consist of:
+run `docker build /tmp/soup`, then the build context would consist of:
 
 * The whole directory structure of `/tmp/soup`, excluding `.j2` files.
 * Rendered versions of all `.j2` files, with the extension removed.
