@@ -149,7 +149,7 @@ All standard environment variables are also mapped as facts, with a prefix of
 
 ### Build troubleshooting
 If the Docker build fails, it can be handy to try running the build with pure
-Docker. That way, you don't have think through as many layers of
+Docker. That way, you don't have to think through as many layers of
 abstraction. One of the design principles of Tedi is that the rendered build
 context sent to Docker is very much "normal" and can be fed straight to
 Docker. Like this:
