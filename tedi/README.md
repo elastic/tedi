@@ -91,7 +91,7 @@ run `docker build /tmp/soup`, then the build context would consist of:
 Each image declared in `tedi.yml` produces a complete build context, which is
 stored in its own directory under `.tedi/renders/`.
 
-FIXME: Rename "renders" directory to "build-contexts" or similar. "Renders" is
+:warning: `FIXME: Rename "renders" directory to "build-contexts" or similar. "Renders" is
 an inconsistent legacy term.`
 
 #### Fact
