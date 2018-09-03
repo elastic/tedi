@@ -28,7 +28,7 @@ def project_runner(fixture='simple'):
 
 
 def in_file(string, test_file='simple-vanilla/README.md') -> bool:
-    return (string in (paths.render_path / test_file).open().read())
+    return (string in (paths.build_path / test_file).open().read())
 
 
 def assert_command_cleans_path(runner, path, command):
@@ -53,12 +53,12 @@ def test_render_command_has_valid_help_text():
 
 def test_clean_command_removes_rendered_files():
     with project_runner() as runner:
-        assert_command_cleans_path(runner, paths.render_path, 'clean')
+        assert_command_cleans_path(runner, paths.build_path, 'clean')
 
 
-def test_render_command_cleans_render_path():
+def test_render_command_cleans_build_path():
     with project_runner() as runner:
-        assert_command_cleans_path(runner, paths.render_path, 'render')
+        assert_command_cleans_path(runner, paths.build_path, 'render')
 
 
 def test_render_command_accepts_facts_as_cli_flags():

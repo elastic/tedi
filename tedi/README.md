@@ -89,10 +89,7 @@ run `docker build /tmp/soup`, then the build context would consist of:
 * Copies (actually hard links) of any assets.
 
 Each image declared in `tedi.yml` produces a complete build context, which is
-stored in its own directory under `.tedi/renders/`.
-
-:warning: `FIXME: Rename "renders" directory to "build-contexts" or similar. "Renders" is
-an inconsistent legacy term.`
+stored in its own directory under `.tedi/build/`.
 
 #### Fact
 A datum that is needed to correctly build an image. Mostly used for

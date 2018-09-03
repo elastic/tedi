@@ -11,5 +11,5 @@ class Paths(object):
         return Path('.tedi/assets')
 
     @property
-    def render_path(self):
-        return Path('.tedi/render')
+    def build_path(self):
+        return Path('.tedi/build')

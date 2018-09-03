@@ -8,7 +8,7 @@ from uuid import uuid4
 
 test_run_id = uuid4()
 source_dir = Path('tedi/tests/fixtures/projects/simple')
-target_dir = Path(f'.tedi/render/tedi-test-{test_run_id}')
+target_dir = Path(f'.tedi/build/tedi-test-{test_run_id}')
 assets_dir = Path(f'.tedi/assets')
 assert source_dir.exists()
 

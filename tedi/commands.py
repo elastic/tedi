@@ -15,9 +15,9 @@ def render() -> None:
 
 def clean() -> None:
     """Remove all rendered files and, optionally, assets."""
-    if paths.render_path.exists():
-        logger.debug('Recursively deleting render path: %s' % str(paths.render_path))
-        shutil.rmtree(str(paths.render_path))
+    if paths.build_path.exists():
+        logger.debug('Recursively deleting render path: %s' % str(paths.build_path))
+        shutil.rmtree(str(paths.build_path))
 
     if cli.get_flag('clean-assets') and paths.assets_path.exists():
         logger.debug('Recursively deleting asset path: %s' % str(paths.assets_path))

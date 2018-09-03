@@ -156,7 +156,7 @@ Docker. Like this:
 
 ```
 tedi render
-docker build .tedi/render/elasticsearch-full
+docker build .tedi/build/elasticsearch-full
 ```
 
 ## Development

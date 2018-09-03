@@ -21,7 +21,7 @@ class Image():
         self.facts = facts
         self.source_dir = path
 
-        self.target_dir = paths.render_path / image_name
+        self.target_dir = paths.build_path / image_name
         self.files = Fileset(self.source_dir)
         self.renderer = JinjaRenderer(self.facts)
         self.docker = docker.from_env()
