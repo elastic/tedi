@@ -1,4 +1,9 @@
 #!/bin/bash
 
+set -eou pipefail
+
+image=tedi:${TEDI_VERSION}
+
 find . -name *.pyc -delete
-docker build -t tedi .
+docker image build -t ${image} .
+docker image tag ${image} docker.elastic.co/tedi/${image}
