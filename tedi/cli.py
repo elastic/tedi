@@ -55,12 +55,12 @@ def build(clean_assets: bool, asset_set: str, fact: Tuple[str]):
 def acquire(asset_set: str, fact: Tuple[str]):
     """Acquire assets."""
     logger.debug('acquire subcommand called from cli')
-    pyconfig.set('cli.flags.asset-set', asset_set)
+    set_flag('asset-set', asset_set)
     set_fact_flags(fact)
 
     # Since the user explicitly called "acquire", make sure they get fresh assets
     # by cleaning the assets dir first.
-    pyconfig.set('cli.flags.clean-assets', True)
+    set_flag('clean-assets', True)
     commands.clean()
 
     commands.acquire()
