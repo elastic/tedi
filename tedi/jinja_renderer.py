@@ -25,6 +25,6 @@ class JinjaRenderer():
         except UndefinedError as e:
             logger.critical('Template rendering failed.')
             logger.critical(f'The Jinja2 template engine said: "{e.message}".')
-            logger.critical('Do you need to declare this as a fact in tedi.yml?')
+            logger.critical('Declare this fact in tedi.yml or pass it in with the "--fact" option.')
             fail()
         return rendered
