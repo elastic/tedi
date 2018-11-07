@@ -16,7 +16,7 @@ def project_runner(fixture='simple'):
     runner = CliRunner()
     with runner.isolated_filesystem():
         # Copy the project fixture into the isolated filesystem dir.
-        shutil.copytree(fixture_path, 'tedi')
+        shutil.copytree(fixture_path, '.tedi')
 
         # Monkeypatch a helper method onto the runner to make running commands
         # easier.

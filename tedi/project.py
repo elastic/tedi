@@ -12,9 +12,9 @@ paths = Paths()
 
 
 class Project():
-    def __init__(self, path=paths.project_path):
+    def __init__(self, path=paths.tedi_path):
         self.path = path
-        config_path = path / 'tedi.yml'
+        config_path = self.path / 'tedi.yml'
 
         try:
             with open(config_path) as config_file:
@@ -22,8 +22,9 @@ class Project():
         except FileNotFoundError:
             logger.critical(f'No configuration file found at {config_path.resolve()}')
             fail()
-
-        assert self.config  # Because the YAML library returns None for empty files.
+        if self.config is None:
+            logger.critical(f'Config file "{self.path}/tedi.yml" is empty.')
+            fail()
         logger.debug(f'Loaded project config from {self.path}: {self.config}')
 
         if 'facts' in self.config:

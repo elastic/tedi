@@ -1,12 +1,18 @@
+import logging
 import os
 from pathlib import Path
+from .logging import warn_once
+
+
+logger = logging.getLogger('tedi.fileset')
 
 
 class Fileset:
     """A Fileset is a collection of all the files under a given top_dir directory."""
     def __init__(self, top_dir):
         self.top_dir = Path(top_dir)
-        assert self.top_dir.exists() and self.top_dir.is_dir()
+        if not self.top_dir.exists() or not self.top_dir.is_dir():
+            warn_once(logger, f'Directory {top_dir.resolve()} not found.')
 
         self.files = []
         for root, subdirs, files in os.walk(str(self.top_dir)):

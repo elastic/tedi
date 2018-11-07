@@ -3,7 +3,7 @@
 # Tedi: A Template Engine for Docker Images
 Tedi is a tool for building Docker images for your project. It adds a templating
 layer to your Dockerfile and any other files you choose. It then renders
-those templates to a build context, and arranges for Docker to build it.
+those templates to a build context and arranges for Docker to build it.
 
 ## Usage
 
@@ -51,7 +51,7 @@ docker run --rm -it tedi --help
 ### Declaring `tedi.yml`
 
 To build a Docker image for your project, create a file within your project at
-`tedi/tedi.yml`.
+`.tedi/tedi.yml`.
 
 Like this:
 
@@ -106,13 +106,13 @@ asset_sets:
 ```
 
 ### Build context files
-Add any other files that are needed to complete your image to the `tedi`
-directory. They will be provided as the Docker build context, via a staging
-area in the hidden directory `.tedi`.
+Add any other files that are needed to complete your image to the `.tedi/template/`
+directory. They will be included in the Docker build context. Each declared image
+will create a build context directory under `.tedi/build/`.
 
 Both plain files and Jinja2 templates are supported.
 
-The contents of `.tedi` are temporary and can be regenerated. You'll likely
+The contents of `.tedi/build/` are temporary and can be regenerated. You'll likely
 want to add it to your `.gitignore` file.
 
 #### Plain files
@@ -122,7 +122,7 @@ into the Docker build context.
 #### Jinja2
 Any files with a `.j2` extension will be rendered through the Jinja2 template
 engine before being added to the Docker build context. Generally, you will want
-to create (at least) a Dockerfile template at `tedi/Dockerfile.j2`.
+to create (at least) a Dockerfile template at `tedi/template/Dockerfile.j2`.
 
 The template engine will expand variables from the _facts_ defined in `tedi.yml`
 and elsewhere (see below).
@@ -159,6 +159,9 @@ tedi render
 docker build .tedi/build/elasticsearch-full
 ```
 
+This also provides a mechanism for building the results of `tedi render` with
+alternative build tools.
+
 ## Development
 
 Tedi is written in Python 3.6 with tests in pytest. Some type annotations can be
@@ -189,5 +192,5 @@ A small wrapper is provided to run a fast suite of tests continuously while
 doing Test Driven Development. It uses pytest-watch with some options to skip
 slow things like coverage reporting and mypy type checking.
 ``` shell
-python setup.py testwatch
+./bin/test-watcher
 ```

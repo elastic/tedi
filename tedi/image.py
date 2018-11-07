@@ -15,7 +15,7 @@ paths = Paths()
 
 class Image():
     def __init__(self, image_name: str, facts: Factset=Factset(),
-                 image_aliases: List[str]=[], path=paths.project_path) -> None:
+                 image_aliases: List[str]=[], path=paths.template_path) -> None:
         self.image_name = image_name
         self.image_aliases = image_aliases
         self.facts = facts
@@ -111,7 +111,7 @@ class Image():
 
         image, build_log = self.docker.images.build(
             path=str(self.target_dir),
-            # Frustrating, Docker change their minds about which part is the "tag".
+            # Frustratingly, Docker change their minds about which part is the "tag".
             # We say that the part after the colon is the tag, like ":latest".
             # Docker does too, most of the time, but for this function, the "tag"
             # parameter takes a fully qualified image name.
