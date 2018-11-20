@@ -1,5 +1,5 @@
 import os
-from .logging import getLogger, warn_once
+from .logging import getLogger
 from .paths import Paths
 
 logger = getLogger(__name__)
@@ -27,11 +27,7 @@ class Factset(object):
                 fact = key.split('_', 2)[-1]
                 self[fact] = value
 
-        # Provide some default facts.
         if 'image_tag' not in self:
-            warn_once(logger,
-                      'Defaulting to image_tag: "latest". '
-                      'Consider setting the "image_tag" fact.')
             self['image_tag'] = 'latest'
 
         # Map the environment to facts.
