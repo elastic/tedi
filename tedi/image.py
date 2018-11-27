@@ -94,12 +94,12 @@ class Image():
         for asset in os.listdir(paths.assets_path):
             source = paths.assets_path / asset
             target = self.target_dir / asset
-            logger.debug(f'Hard linking {source} -> {target}')
+            logger.debug(f'Hard linking: {source} -> {target}')
             try:
                 os.link(source, target)
             except PermissionError:
                 # This happens on vboxfs, as often used with Vagrant.
-                logger.warn(f'Hard linking failed. Copying {source} -> {target}')
+                logger.warn(f'Hard linking failed. Copying: {source} -> {target}')
                 shutil.copyfile(source, target)
 
     def build(self):
@@ -112,7 +112,7 @@ class Image():
         tag = self.facts["image_tag"]
         fqin = f'{self.image_name}:{tag}'
 
-        logger.info(f'Building {fqin}...')
+        logger.info(f'Building image: {fqin}')
 
         image, build_log = self.docker.images.build(
             path=str(self.target_dir),
@@ -134,5 +134,5 @@ class Image():
                     logger.debug(message)
 
         for alias in self.image_aliases:
-            logger.info(f'Aliasing {self.image_name}:{tag} as {alias}:{tag}')
+            logger.info(f'Aliasing image: {self.image_name}:{tag} -> {alias}:{tag}')
             image.tag(f'{alias}:{tag}')

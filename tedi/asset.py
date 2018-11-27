@@ -28,12 +28,12 @@ class Asset():
         target_dir.mkdir(parents=True, exist_ok=True)
         target = target_dir / self.filename
         if target.exists():
-            logger.debug(f'Using cached asset "{target}" for asset {self.source}.')
+            logger.debug(f'Using cached asset: {self.source} -> {target}')
         else:
-            logger.info(f'Acquiring "{self.source}" to "{target}".')
+            logger.info(f'Acquiring asset: {self.source} -> {target}')
             try:
                 wget.download(self.source, str(target), bar=None)
             except (HTTPError, URLError) as e:
-                logger.critical(f'Error downloading "{self.source}".')
+                logger.critical(f'Download error: {self.source}')
                 logger.critical(e)
                 fail()

@@ -86,7 +86,7 @@ def set_fact_flags(flag_args: Tuple[str]) -> None:
             logger.critical('Like: "tedi --fact=temperature:hot')
             fail()
         fact, value = arg.split(':', 1)
-        logger.debug(f'Setting fact from cli: "{fact}" == "{value}"')
+        logger.debug(f'Setting fact from cli: "{fact}" -> "{value}"')
         facts[fact] = value
 
     set_flag('fact', facts)
