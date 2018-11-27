@@ -95,7 +95,12 @@ class Image():
             source = paths.assets_path / asset
             target = self.target_dir / asset
             logger.debug(f'Hard linking {source} -> {target}')
-            os.link(source, target)
+            try:
+                os.link(source, target)
+            except PermissionError:
+                # This happens on vboxfs, as often used with Vagrant.
+                logger.warn(f'Hard linking failed. Copying {source} -> {target}')
+                shutil.copyfile(source, target)
 
     def build(self):
         """Run a "docker build" on the rendered image files."""
