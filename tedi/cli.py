@@ -71,7 +71,7 @@ def set_flag(flag: str, value: Any) -> None:
     pyconfig.set(f'cli.flags.{flag}', value)
 
 
-def get_flag(flag: str, default: Any=None) -> Any:
+def get_flag(flag: str, default: Any = None) -> Any:
     """Get a CLI flag from the config."""
     return pyconfig.get(f'cli.flags.{flag}', default)
 

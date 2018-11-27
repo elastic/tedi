@@ -14,8 +14,8 @@ paths = Paths()
 
 
 class Image():
-    def __init__(self, image_name: str, facts: Factset=Factset(),
-                 image_aliases: List[str]=[], path=paths.template_path) -> None:
+    def __init__(self, image_name: str, facts: Factset = Factset(),
+                 image_aliases: List[str] = [], path=paths.template_path) -> None:
         self.image_name = image_name
         self.image_aliases = image_aliases
         self.facts = facts
@@ -28,7 +28,7 @@ class Image():
         logger.debug(f'New Image: {self}')
 
     @classmethod
-    def from_config(cls, name, config, facts: Factset=Factset()):
+    def from_config(cls, name, config, facts: Factset = Factset()):
         """Create an Image using a configuration block from tedi.yml
 
         Like this:
