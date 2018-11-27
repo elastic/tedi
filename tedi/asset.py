@@ -1,5 +1,4 @@
 import wget
-import sys
 from pathlib import Path
 from typing import Union
 from urllib.error import HTTPError, URLError
@@ -33,8 +32,7 @@ class Asset():
         else:
             logger.info(f'Acquiring "{self.source}" to "{target}".')
             try:
-                wget.download(self.source, str(target))
-                sys.stdout.write('\n')  # wget should do this, but doesn't.
+                wget.download(self.source, str(target), bar=None)
             except (HTTPError, URLError) as e:
                 logger.critical(f'Error downloading "{self.source}".')
                 logger.critical(e)

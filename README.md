@@ -17,10 +17,10 @@ recommended approach.
 
 ``` shell
 # Pull the image
-docker pull docker.elastic.co/tedi/tedi:0.10
+docker pull docker.elastic.co/tedi/tedi:0.11
 
 # Give it a nice, short name for local use.
-docker tag docker.elastic.co/tedi/tedi:0.10 tedi
+docker tag docker.elastic.co/tedi/tedi:0.11 tedi
 
 # Run a build (from your project directory).
 docker run --rm -it -v /var/run/docker.sock:/var/run/docker.sock -v $PWD:/mnt tedi build
