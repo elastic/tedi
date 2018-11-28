@@ -167,7 +167,7 @@ alternative build tools.
 Tedi is written in Python 3.6 with tests in pytest. Some type annotations can be
 found sprinkled around, for consumption by [mypy](http://mypy-lang.org/).
 
-There's a [seperate README](./tedi/README.md) covering some of the design and
+There's a [separate README](./tedi/README.md) covering some of the design and
 implementation details.
 
 ### Initial setup
