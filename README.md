@@ -45,7 +45,7 @@ docker run -e TEDI_DEBUG=true [...] tedi build
 You can explore other commands via the built-in help:
 
 ``` shell
-docker run --rm -it tedi --help
+docker run --rm tedi --help
 ```
 
 ### Declaring `tedi.yml`

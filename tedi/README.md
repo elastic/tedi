@@ -1,4 +1,4 @@
-# Developer README
+# Tedi Developer README
 
 ## Design Goals
 
@@ -69,7 +69,7 @@ URLs will be downloaded and `file://` URLs will be copied into the build context
 from elsewhere on the filesystem.
 
 Assets are cached quite aggressively (perhaps excessively) to speed up
-subsequent builds.
+subsequent builds. The cache can be invalidated; see `tedi clean --help`.
 
 ### Assetset
 An `Assetset` is a collection of `Assets`. A Tedi build is invoked with a single
@@ -82,8 +82,8 @@ then made available to the build context as local files.
 ## Glossary
 
 #### Build context
-All the files that are provided to Docker when building an image. If you were to
-run `docker build /tmp/soup/`, then the build context would consist of:
+All the files that are provided to Docker when building an image. After the
+rendering stage, the build context consists of:
 
 * The whole directory structure of `./tedi/template/`, excluding `.j2` files.
 * Rendered versions of all `.j2` files, with the extension removed.
@@ -119,7 +119,7 @@ the [user README](../README.md).
 The directory `.tedi` within the project that is to be built. This directory
 must contain `tedi.yml` and a `template` directory
 
-#### Template direcory
+#### Template directory
 The template directory at `.tedi/template` provides the skeleton for Docker build
 contexts. It can contain an arbitrary directory structure with Jinja2 files and/or
 plain files. To be useful, the template directory will need a `Dockerfile.j2` (or
