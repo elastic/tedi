@@ -68,10 +68,11 @@ class Image():
 
     def render(self):
         """Render the template files to a ready-to-build directory."""
-        logger.info(f'Rendering {self.image_name}: {self.source_dir} -> {self.target_dir}')
         if self.target_dir.exists():
-            logger.debug(f'Removing old render: {self.target_dir}')
+            logger.debug(f'Removing old build context: {self.target_dir}')
             shutil.rmtree(str(self.target_dir))
+
+        logger.info(f'Rendering build context: {self.source_dir} -> {self.target_dir}')
         self.target_dir.mkdir(parents=True)
 
         for source in self.files:
