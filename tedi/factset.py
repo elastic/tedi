@@ -44,7 +44,7 @@ class Factset(object):
         logger.debug(f'New Factset: {self}')
 
     def __repr__(self):
-        return 'Factset(**%s)' % self.facts
+        return 'Factset(**%s)' % {k: v for k, v in self.facts.items() if not k.startswith('ENV_')}
 
     def __getitem__(self, key):
         return self.facts[key]
