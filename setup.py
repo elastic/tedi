@@ -2,7 +2,7 @@ from setuptools import setup
 
 
 setup(name='tedi',
-      version='0.12',
+      version='0.13',
       description='Build tool for Elastic Stack Docker images',
       url='http://github.com/elastic/tedi',
       author='Elastic',
