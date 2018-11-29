@@ -47,6 +47,9 @@ class Image():
         The underlying Factset is not mutated. An independant copy is made
         for the Image's use.
         """
+        if not config:
+            config = {}
+
         logger.debug(f'Loaded image config for {name}: {config}')
         facts = facts.copy()
 
