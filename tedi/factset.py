@@ -1,6 +1,7 @@
 import os
 from .logging import getLogger
 from .paths import Paths
+import pyconfig
 
 logger = getLogger(__name__)
 paths = Paths()
@@ -30,7 +31,12 @@ class Factset(object):
         if 'image_tag' not in self:
             self['image_tag'] = 'latest'
 
-        # Map the environment to facts.
+        # Then look for facts from the command line.
+        cli_facts = pyconfig.get(f'cli.flags.fact')
+        if cli_facts:
+            for fact, value in cli_facts.items():
+                self[fact] = value
+
         # FIXME: Make this something you can switch off or on.
         for var, value in os.environ.items():
             self[f'ENV_{var}'] = value
